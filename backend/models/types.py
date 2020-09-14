@@ -13,7 +13,7 @@ class Types(db.Model):
     modified_date = db.Column(
         db.DateTime, server_default=db.func.current_timestamp(), server_onupdate=db.func.current_timestamp(), nullable=False)
     comments = db.relationship(
-        'Comment', backref='comments', cascade="all")
+        'Comment', backref='types', cascade="all")
 
     def __init__(self, name, created_by, modified_by):
         self.name = name

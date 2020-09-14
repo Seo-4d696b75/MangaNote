@@ -16,8 +16,8 @@ class Comment(db.Model):
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     page = db.Column(db.Integer, nullable=False)
-    x = db.Column(db.Integer, nullable=False)
-    y = db.Column(db.Integer, nullable=False)
+    x = db.Column(db.Float, nullable=False)
+    y = db.Column(db.Float, nullable=False)
     created_by = db.Column(db.String(255), nullable=False)
     created_date = db.Column(
         db.DateTime, server_default=db.func.current_timestamp(), server_onupdate=db.func.current_timestamp(), nullable=False)
