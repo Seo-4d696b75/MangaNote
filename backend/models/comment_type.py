@@ -1,8 +1,8 @@
 from app.database import db
 
 
-class Types(db.Model):
-    __tablename__ = 'types'
+class CommentType(db.Model):
+    __tablename__ = 'comment_types'
     id = db.Column(db.Integer,
                    primary_key=True, autoincrement=True)
     name = db.Column(db.String(16), nullable=False)
@@ -13,7 +13,7 @@ class Types(db.Model):
     modified_date = db.Column(
         db.DateTime, server_default=db.func.current_timestamp(), server_onupdate=db.func.current_timestamp(), nullable=False)
     comments = db.relationship(
-        'Comment', backref='types', cascade="all")
+        'Comment', backref='comment_types', cascade="all")
 
     def __init__(self, name, created_by, modified_by):
         self.name = name
