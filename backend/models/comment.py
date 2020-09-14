@@ -9,15 +9,15 @@ class Comment(db.Model):
         'books.id', ondelete="cascade", onupdate="cascade"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete="cascade", onupdate="cascade"), nullable=False)
-    types = db.Column(db.Integer, db.ForeignKey(
-        'types.id', ondelete="cascade", onupdate="cascade"), nullable=False)
+    type_id = db.Column(db.Integer, db.ForeignKey(
+        'comment_types.id', ondelete="cascade", onupdate="cascade"), nullable=False)
     title = db.Column(db.String(64))
     text = db.Column(db.String(255), nullable=False)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     page = db.Column(db.Integer, nullable=False)
-    x = db.Column(db.Integer, nullable=False)
-    y = db.Column(db.Integer, nullable=False)
+    x = db.Column(db.Float, nullable=False)
+    y = db.Column(db.Float, nullable=False)
     created_by = db.Column(db.String(255), nullable=False)
     created_date = db.Column(
         db.DateTime, server_default=db.func.current_timestamp(), server_onupdate=db.func.current_timestamp(), nullable=False)
