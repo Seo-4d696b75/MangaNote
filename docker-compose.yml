@@ -1,0 +1,51 @@
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: "frontend"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./frontend/:/app"
+      - "/app/app/node_modules"
+    command: sh -c "cd app && yarn start"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: "backend"
+    ports:
+      - "4000:4000"
+    volumes:
+      - "./backend/:/app"
+    environment:
+      APP_DATABASE_HOST: db
+      APP_DATABASE_NAME: manga-note
+      APP_DATABASE_USER: root
+      APP_DATABASE_PASSWORD: root
+      FLASK_ENV: development
+      TZ: Asia/Tokyo
+    command: sh -c "./wait-for-it.sh db:3306 -- ./start.sh"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: manga-note
+      MYSQL_PASSWORD: root
+      TZ: "Asia/Tokyo"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - "./db/data:/var/lib/mysql"
+      - "./db/my.cnf:/etc/mysql/conf.d/my.cnf"
+    ports:
+      - "3306:3306"
