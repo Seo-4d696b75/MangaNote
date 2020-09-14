@@ -11,12 +11,10 @@ function Viewer() {
   const mangaImagesLength = 3;
 
   const handleClick = (event) => {
-    const {screenX, screenY} = event;
-    const mangaImage = event.target;
-    const clientRect = mangaImage.getBoundingClientRect();
-    const {left, right, top, bottom} = clientRect;
+    const {pageX, pageY} = event;
+    const [x, y] = normalCoordinate(pageX, pageY);
 
-    if(screenX <= (left + right) / 2) {
+    if(x <= 1/2) {
       // 左半分をクリック
       setPageNumber(pageNumber ? pageNumber - 1 : 0);
     } else {
@@ -45,6 +43,27 @@ function Viewer() {
       </Container>
     </div>
   );
+}
+
+// TODO: 以下の関数を適切な場所に移動
+// ブラウザ座標 -> 正規座標
+const normalCoordinate = (pageX, pageY) => {
+  const mangaImage = document.getElementById('mangaImage');
+  const clientRect = mangaImage.getBoundingClientRect();
+  const {left, right, top, bottom} = clientRect;
+  const x = (pageX - left) / (right - left);
+  const y = (pageY - top) / (bottom - top);
+  return [x, y];
+}
+
+// 正規座標 -> ブラウザ座標
+const pageCoordinate = (x, y) => {
+  const mangaImage = document.getElementById('mangaImage');
+  const clientRect = mangaImage.getBoundingClientRect();
+  const {left, right, top, bottom} = clientRect;
+  const pageX = (right - left) * x + left;
+  const pageY = (top - bottom) * y + bottom;
+  return [pageX, pageY];
 }
 
 export default Viewer;
