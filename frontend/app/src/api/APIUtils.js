@@ -19,14 +19,26 @@ const postdefault = async (endpoint, params) => {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(params)
+            },
+        body: JSON.stringify(params)
     }).catch(err =>{
         throw err;
     });
     return response.json()
 }
 
-const deletedefault = () =>{
-    return fetch()
-}
+const putdefault = async (endpoint, userid) => {
+    const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
+        method: "PUT",
+    }).catch((err) => {
+        throw err;
+    });
+};
+
+const deletedefault = async (endpoint, userid) => {
+    const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
+        method: "DELETE",
+    }).catch((err) => {
+        throw err;
+    });
+};
