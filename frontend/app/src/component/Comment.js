@@ -18,6 +18,16 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) 
     case 'map': icon = '📍'; break;
   }
 
+  // アイコン位置によって吹き出し位置を変える
+  let placement = 'bottom';
+  if(x <= 20) {
+    placement = 'right';
+  } else if(x >= 80) {
+    placement = 'left';
+  } else if(y >= 80) {
+    placement = 'top';
+  }
+
   const handleClick = () => {
     console.log({title, text});
   }
@@ -26,6 +36,7 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) 
     <div>
       <OverlayTrigger
         trigger="click"
+        placement={placement}
         overlay={<Tooltip>{text}</Tooltip>}
       >
         <p onClick={handleClick} style={style}>{icon}</p>
