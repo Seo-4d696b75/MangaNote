@@ -83,6 +83,10 @@ def post_comment(book_id):
             return jsonify({'message':'query missing > ' + str(key_err)}), 400
         db.session.add(comment)
         db.session.commit()
+        return jsonify({
+            'message': 'success to post a comment',
+            'data': data
+        }), 201
     except Exception as e:
         message = str(e)
         logger.error(message)
