@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import MiniMap from './MiniMap';
+import Popover from 'react-bootstrap/Popover';
+import './MiniMap.css';
 
 function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) {
   const style = {
@@ -13,9 +16,15 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) 
 
   let icon;
   switch(type) {
-    case 'comment': icon = '💬'; break;
-    case 'spoiler': icon = '🤐'; break;
-    case 'map': icon = '📍'; break;
+    case 'comment':
+      icon = '💬'; 
+      break;
+    case 'spoiler': 
+      icon = '🤐'; 
+      break;
+    case 'map': 
+      icon = '📍'; 
+      break;
   }
 
   // アイコン位置によって吹き出し位置を変える
@@ -32,12 +41,32 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) 
     console.log({title, text});
   }
 
+
   return (
     <div>
       <OverlayTrigger
         trigger="click"
         placement={placement}
-        overlay={<Tooltip>{text}</Tooltip>}
+        overlay={ type === 'map' ? (
+          
+          <Popover className='Map-popover'>
+            <Popover.Title as='h3'>{title}</Popover.Title>
+            <Popover.Content >
+              <div className='Place-content'>
+                <MiniMap lat={latitude} lng={longitude}></MiniMap>
+                <div className='Comment-container'>
+                  <div className='Place-coordinate'>
+                    {`座標：${latitude>0 ? 'N':'S'}${Math.abs(latitude).toFixed(4)} ${longitude>0 ? 'E':'W'}${Math.abs(longitude).toFixed(4)}`}
+                  </div>
+                  <p>{text}</p>
+                </div>
+              </div>
+            </Popover.Content>
+    
+          </Popover>
+        ) : (
+          <Tooltip>{text}</Tooltip>
+        )}
       >
         <p onClick={handleClick} style={style}>{icon}</p>
       </OverlayTrigger>
