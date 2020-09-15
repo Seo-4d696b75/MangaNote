@@ -2,7 +2,7 @@
 const baseurl = "http://localhost:4000/api/";
 
 
-const getdefault = (endpoint,params) =>{
+export const getdefault = (endpoint,params) =>{
     
     const url = new URL(baseurl + endpoint);
     url.search = new URLSearchParams(params).toString();
@@ -14,7 +14,7 @@ const getdefault = (endpoint,params) =>{
     }))
 }
 
-const postdefault = async (endpoint, params) => {
+export const postdefault = async (endpoint, params) => {
     const response = await fetch(baseurl+endpoint, {
         method: "POST",
         headers: {
@@ -27,7 +27,7 @@ const postdefault = async (endpoint, params) => {
     return response.json()
 }
 
-const putdefault = async (endpoint, userid) => {
+export const putdefault = async (endpoint, userid) => {
     const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
         method: "PUT",
     }).catch((err) => {
@@ -35,10 +35,11 @@ const putdefault = async (endpoint, userid) => {
     });
 };
 
-const deletedefault = async (endpoint, userid) => {
+export const deletedefault = async (endpoint, userid) => {
     const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
         method: "DELETE",
     }).catch((err) => {
         throw err;
     });
 };
+
