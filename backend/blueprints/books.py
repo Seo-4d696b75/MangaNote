@@ -1,4 +1,4 @@
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, request
 import logging
 from app.database import db
 from app.models import *
@@ -19,6 +19,27 @@ def index():
     return jsonify({
         "message": "books_test"
     })
+
+
+@books.route('/')
+def get_list():
+    page = request.args.get("page", default=0, type=int)
+    limit = request.args.get("limit", default=10, type=int)
+    offset = page * limit
+    try:
+        books = Book.query.limit(limit).offset(offset)
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"status": "Internal server error"}), 500
+
+    result = []
+    for book in books:
+        result.append({
+            "id": book.id,
+            "title": book.title,
+            "comment_cnt": len(book.comments)
+        })
+    return jsonify(result)
 
 
 @books.route('/<book_id>')
