@@ -3,7 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
-import "./Viewer.css"
+import convertToRelativePosition from "../logic/convertToRelativePosition";
+import "./Viewer.css";
 
 function Viewer() {
   const [pageNumber, setPageNumber] = useState(0);
@@ -12,7 +13,7 @@ function Viewer() {
 
   const handleClick = (event) => {
     const {pageX, pageY} = event;
-    const [x, y] = normalCoordinate(pageX, pageY);
+    const [x, y] = convertToRelativePosition(pageX, pageY);
 
     if(x <= 1/2) {
       // 左半分をクリック
@@ -40,30 +41,9 @@ function Viewer() {
             />
           </Col>
         </Row>
-      </Container>
+        </Container>
     </div>
   );
-}
-
-// TODO: 以下の関数を適切な場所に移動
-// ブラウザ座標 -> 正規座標
-const normalCoordinate = (pageX, pageY) => {
-  const mangaImage = document.getElementById('mangaImage');
-  const clientRect = mangaImage.getBoundingClientRect();
-  const {left, right, top, bottom} = clientRect;
-  const x = (pageX - left) / (right - left);
-  const y = (pageY - top) / (bottom - top);
-  return [x, y];
-}
-
-// 正規座標 -> ブラウザ座標
-const pageCoordinate = (x, y) => {
-  const mangaImage = document.getElementById('mangaImage');
-  const clientRect = mangaImage.getBoundingClientRect();
-  const {left, right, top, bottom} = clientRect;
-  const pageX = (right - left) * x + left;
-  const pageY = (top - bottom) * y + bottom;
-  return [pageX, pageY];
 }
 
 export default Viewer;
