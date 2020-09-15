@@ -16,3 +16,5 @@ class User(db.Model):
 
     def __init__(self, name, created_by, modified_by):
         self.name = name
+        self.created_by = created_by
+        self.modified_by = modified_by
