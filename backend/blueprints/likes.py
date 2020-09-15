@@ -40,7 +40,7 @@ def put_likes(book_id, comment_id, user_id):
         db.session.rollback()
         return jsonify({"status": "Internal Sever Error"}), 503
 
-    return None, 204
+    return '', 204
 
 @likes.route('/likes/<int:user_id>',  methods=['DELETE'])
 def delete_likes(book_id, comment_id, user_id):
@@ -56,4 +56,4 @@ def delete_likes(book_id, comment_id, user_id):
         db.session.rollback()
         return jsonify({"status": "Internal Sever Error"}), 503
 
-    return None, 204
+    return '', 204
