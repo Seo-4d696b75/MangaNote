@@ -17,3 +17,5 @@ class Book(db.Model):
     def __init__(self, title, path, created_by, modified_by):
         self.title = title
         self.path = path
+        self.created_by = created_by
+        self.modified_by = modified_by

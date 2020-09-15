@@ -12,7 +12,7 @@ class Comment(db.Model):
     type_id = db.Column(db.Integer, db.ForeignKey(
         'comment_types.id', ondelete="cascade", onupdate="cascade"), nullable=False)
     title = db.Column(db.String(64))
-    text = db.Column(db.String(255), nullable=False)
+    text = db.Column(db.Text, nullable=False)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     page = db.Column(db.Integer, nullable=False)
@@ -27,10 +27,14 @@ class Comment(db.Model):
     likes = db.relationship(
         'Like', backref='comments', cascade="all")
 
-    def __init__(self, user_id, book_id, text, page, x, y, created_by, modified_by, title=None, longitude=None, latitude=None):
+    def __init__(self, user_id, book_id, type_id, text, page, x, y, created_by, modified_by, title=None, longitude=None, latitude=None):
         self.user_id = user_id
         self.book_id = book_id
+        self.type_id = type_id
         self.text = text
+        self.page = page
+        self.x = x
+        self.y = y
         self.created_by = created_by
         self.modified_by = modified_by
         self.title = title
