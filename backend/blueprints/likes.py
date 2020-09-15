@@ -37,6 +37,7 @@ def put_likes(book_id, comment_id, user_id):
     try:
         db.session.commit()
     except:
+        db.session.rollback()
         return jsonify({"status": "Internal Sever Error"}), 503
 
     return None, 204
@@ -52,6 +53,7 @@ def delete_likes(book_id, comment_id, user_id):
     try:
         db.session.commit()
     except:
+        db.session.rollback()
         return jsonify({"status": "Internal Sever Error"}), 503
 
     return None, 204
