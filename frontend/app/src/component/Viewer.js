@@ -4,6 +4,7 @@ import Image from 'react-bootstrap/Image';
 
 import Comment from './Comment';
 import Menu from './Menu';
+import CommentModal from './CommentModal';
 
 import getComments from '../api/getComments';
 import convertToRelativePosition from '../logic/convertToRelativePosition';
@@ -16,6 +17,9 @@ function Viewer() {
   const [isMenuAppear,setIsMenuAppear] = useState(false);
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
+  const [show, setShow] = useState(false);
+  const handleModalClose = () => setShow(false);
+
   const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
   const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
   const mangaImagesLength = 3;
@@ -28,6 +32,7 @@ function Viewer() {
 
   const handleLongPress = (event) => {
     console.log("LongPress");
+    setShow(true);
   }
 
   const handleClick = (event) => {
@@ -87,6 +92,10 @@ function Viewer() {
             : null
           }
         </div>
+        <CommentModal
+          show={show}
+          handleClose={handleModalClose}
+        ></CommentModal>
       </Container>
     </div>
   );
