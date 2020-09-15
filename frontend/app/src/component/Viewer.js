@@ -30,18 +30,15 @@ function Viewer() {
 
   return (
     <div>
-      <Container>
-        <Row>
-          <Col>
-            <Image
-              id="mangaImage"
-              className="mx-auto d-block"
-              src={mangaImageUrl}
-              onClick={handleClick}
-            />
-          </Col>
-        </Row>
-        </Container>
+      <Container id="mangaContainer">
+        <div style={{position: "relative"}}>
+          <Image
+            id="mangaImage"
+            src={mangaImageUrl}
+            onClick={handleClick}
+          />
+        </div>
+      </Container>
     </div>
   );
 }
