@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
-import Comment from './Comment';
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
-import "./Viewer.css";
 
+import Comment from './Comment';
 import Menu from './Menu';
+
 import getComments from '../api/getComments';
 import convertToRelativePosition from '../logic/convertToRelativePosition';
+
 import "./Viewer.css";
 
 
@@ -17,6 +18,8 @@ function Viewer() {
   const [comments, setComments] = useState([]);
   const [isMenuAppear,setisMenuAppear] = useState(false);
   const [isCommentAppear,setisCommentAppear] = useState(true);
+  const [selectedUser,setselectedUser] = useState(1);
+  const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
   const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
   const mangaImagesLength = 3;
 
@@ -34,7 +37,7 @@ function Viewer() {
       // 左半分をクリック
       setPageNumber(pageNumber ? pageNumber - 1 : 0);
     } else if(x >= 200 / 3)
-     {
+    {
       // 右側をクリック
       if(pageNumber + 1 >= mangaImagesLength) {
         setPageNumber(mangaImagesLength - 1);
@@ -55,8 +58,9 @@ function Viewer() {
   const menuChange = () =>{
     setisMenuAppear(!(isMenuAppear));
   }
-  const userChange = () =>{
-    
+  const userChange = (user_id) =>{
+    setselectedUser(user_id);
+    console.log("user_id",selectedUser);
   }
   
 
@@ -68,15 +72,17 @@ function Viewer() {
   return (
     <div>
       <Container id="mangaContainer">
-      {isMenuAppear 
+      
+        <div style={{position: "relative"}}>
+        {isMenuAppear 
             ? <Menu 
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                selectedUser = {selectedUser}
               /> 
             : null 
           }
-        <div style={{position: "relative"}}>
           <Image
             id="mangaImage"
             src={mangaImageUrl}
