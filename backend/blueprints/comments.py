@@ -10,11 +10,15 @@ logger = logging.getLogger('app')
 comments = Blueprint('comments', __name__)
 
 
-@comments.route('/comments')
+@comments.route('/comments', methods=['GET'])
 def get_comments(book_id):
-    user_id = int(request.args.get('user_id', '0'))
-    page = int(request.args.get('page', '-1'))
-    limit = int(request.args.get('limit', '1000000'))
+    user_id = request.args.get('user_id')
+    page = request.args.get('page')
+    limit = request.args.get('limit')
+    if user_id is None:
+        return jsonify({'message':'query "user_id" missing'}), 400
+    page = 1 if page is None else int(page)
+    limit = 10000 if limit is None else min(1,int(limit))
     try:
         comments = db.session.query(Comment)\
             .filter(
@@ -42,6 +46,47 @@ def get_comments(book_id):
     except Exception as e:
         message = str(e)
         logger.error(message)
+        return jsonify({
+            "message": message
+        }), 500
+
+
+@comments.route('/comments', methods=['POST'])
+def post_comment(book_id):
+    try:
+        if db.session.query(func.count(Book.id)).filter(Book.id == book_id).scalar() == 0:
+            return jsonify({'message':'no book found'}), 400
+        data = request.get_json()
+        user_id = data.get('user_id', None)
+        if user_id is None:
+            return jsonify({'message':'user id missing'}), 400
+        user = db.session.query(User).filter(User.id == user_id).first()
+        if user is None:
+            return jsonify({'message':'no user found'}), 400
+        comment = None
+        try:
+            comment = Comment(
+                book_id = book_id,
+                user_id = data['user_id'],
+                type_id = data['type'],
+                title = data.get('title', None),
+                text = data['text'],
+                longitude = data.get('longitude', None),
+                latitude = data.get('latitude', None),
+                page = data['page'],
+                x = data.get('x', None),
+                y = data.get('y', None),
+                created_by = user.name,
+                modified_by = user.name
+            )
+        except KeyError as key_err:
+            return jsonify({'message':'query missing > ' + str(key_err)}), 400
+        db.session.add(comment)
+        db.session.commit()
+    except Exception as e:
+        message = str(e)
+        logger.error(message)
+        db.session.rollback()
         return jsonify({
             "message": message
         }), 500
