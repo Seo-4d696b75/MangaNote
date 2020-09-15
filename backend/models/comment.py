@@ -1,5 +1,4 @@
 from app.database import db
-from sqlalchemy.dialects.mysql import TEXT as Text
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -12,7 +11,7 @@ class Comment(db.Model):
     type_id = db.Column(db.Integer, db.ForeignKey(
         'comment_types.id', ondelete="cascade", onupdate="cascade"), nullable=False)
     title = db.Column(db.String(64))
-    text = db.Column(Text, nullable=False)
+    text = db.Column(db.Text, nullable=False)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     page = db.Column(db.Integer, nullable=False)
@@ -32,6 +31,9 @@ class Comment(db.Model):
         self.book_id = book_id
         self.type_id = type_id
         self.text = text
+        self.page = page
+        self.x = x
+        self.y = y
         self.created_by = created_by
         self.modified_by = modified_by
         self.title = title
