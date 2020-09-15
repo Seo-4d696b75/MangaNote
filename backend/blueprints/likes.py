@@ -22,7 +22,7 @@ def index(book_id, comment_id):
 
 @likes.route('/likes/<int:user_id>',  methods=['PUT'])
 def put_likes(book_id, comment_id, user_id):
-    exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).one()
+    exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).first()
     if exist_likes is not None:
         return jsonify({"status": "Bad Request", "message": "The user already liked this comment."}), 400
     
@@ -44,7 +44,7 @@ def put_likes(book_id, comment_id, user_id):
 
 @likes.route('/likes/<int:user_id>',  methods=['DELETE'])
 def delete_likes(book_id, comment_id, user_id):
-    exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).one()
+    exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).first()
     if exist_likes is None:
         return jsonify({"status": "Bad Request", "message": "The user hasn't liked this comment."}), 400
     else:
