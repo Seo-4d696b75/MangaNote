@@ -7,6 +7,7 @@ import Menu from './Menu';
 
 import getComments from '../api/getComments';
 import convertToRelativePosition from '../logic/convertToRelativePosition';
+import useLongPress from '../logic/useLongPress';
 import "./Viewer.css";
 
 function Viewer() {
@@ -23,6 +24,10 @@ function Viewer() {
     setComments(getComments(bookId));
   }, []);
 
+  const handleLongPress = (event) => {
+    console.log("LongPress");
+  }
+
   const handleClick = (event) => {
     const {pageX, pageY} = event;
     const [x, y] = convertToRelativePosition(pageX, pageY);
@@ -35,6 +40,10 @@ function Viewer() {
       setisMenuAppear(!(isMenuAppear));
     }
   }
+
+  const defaultOptions = {shouldPreventDefault: true, delay: 500,};
+
+  const longPressEvent = useLongPress(handleLongPress, handleClick, defaultOptions);
 
   const commentChange= () => {
     setisCommentAppear(!(isCommentAppear));
@@ -61,7 +70,7 @@ function Viewer() {
           <Image
             id="mangaImage"
             src={mangaImageUrl}
-            onClick={handleClick}
+            {...longPressEvent}
           />
           {commentList}
           {isMenuAppear
