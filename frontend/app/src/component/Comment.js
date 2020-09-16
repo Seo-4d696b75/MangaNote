@@ -12,6 +12,7 @@ import heartFill from '../images/comic/heart-fill.svg';
 function Comment({commentData}) {
   const {type, title, text, longitude, latitude, x, y, like_cnt} = commentData;
   const [isLiked, setIsLiked] = useState(commentData.is_liked);
+  const [like_animated, setLikeAnimated] = useState(false);
   const max_font_size = 3;
   const min_font_size = 1;
   const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
@@ -51,6 +52,20 @@ function Comment({commentData}) {
     console.log({title, text});
   }
 
+  const onLikeClicked = () => {
+    //TODO call API
+    if ( isLiked ){
+      setIsLiked(false);
+    } else {
+      // animate like icon for 0.2 sec
+      setIsLiked(true);
+      setLikeAnimated(true);
+      setTimeout(() => {
+        setLikeAnimated(false);
+      }, 200);
+    }
+  }
+
 
   return (
     <div>
@@ -84,14 +99,20 @@ function Comment({commentData}) {
               <p className='Comment-text'>{text}</p>
               <div className='Action-container'>
                 <img
+                  className={`Comment-like-icon ${like_animated ? 'animated' : ''}`}
                   src={isLiked ? heartFill : heart}
-                  style={{height: "20px", width: "20px", margin: "5px"}}
-                  onClick={() => setIsLiked(!isLiked)}
+                  onClick={onLikeClicked}
                 />
+                <div 
+                  className='Comment-like-cnt'
+                  style={{color: isLiked ? 'red':'white'}}>
+                  {like_cnt}
+                </div>
                 <TwitterShareButton 
+                  className='Comment-sns-button'
                   url={'https://url-to-image/or/page-has-thumbnail'} 
                   title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
-                  <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent',filter:'drop-shadow(10px 10px 10px rgba(1,1,1,0.6))'}} iconFillColor='#1DA1F2'/>
+                  <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>
                 </TwitterShareButton>
               </div>
             </div>
