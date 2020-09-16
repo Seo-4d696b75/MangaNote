@@ -9,9 +9,12 @@ import { TwitterShareButton, TwitterIcon} from 'react-share';
 import heart from '../images/comic/heart.svg';
 import heartFill from '../images/comic/heart-fill.svg';
 
-function Comment({commentData}) {
-  const {type, title, text, longitude, latitude, x, y, like_cnt} = commentData;
-  const [isLiked, setIsLiked] = useState(commentData.is_liked);
+import put_good from '../api/putGood';
+
+function Comment(props) {
+  const book_id = props.book_id;
+  const {type, title, text, longitude, latitude, x, y, like_cnt, is_liked} = props.commentData;
+  const [isLiked, setIsLiked] = useState(is_liked);
   const [like_animated, setLikeAnimated] = useState(false);
   const max_font_size = 3;
   const min_font_size = 1;

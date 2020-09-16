@@ -31,19 +31,23 @@ function Viewer() {
   
   const mangaImagesLength = 10;
 
-  useEffect(async () => {
-    // 初回だけ実行される処理
-    const params = {
-      user_id:selectedUser,
-      page:0,
-      limit:mangaImagesLength-1
+  useEffect(() => {
+    async function fetchData(){
+
+      // 初回だけ実行される処理
+      const params = {
+        user_id: selectedUser,
+        page: 0,
+        limit: mangaImagesLength - 1
+      };
+      var [comments, books] = await Promise.all([
+        getComments(bookId, params),
+        getBooks(bookId),
+      ]);
+      setComments(comments);
+      setMangaImage(books.images);
     }
-    const comments = await getComments(bookId,params);
-    setComments(comments);
-    //console.log(comments);
-    const books = await getBooks(bookId);
-    setMangaImage(books.images);
-    //console.log(mangaImage);
+    fetchData();
   }, [selectedUser]);
 
   const handleLongPress = (event) => {
@@ -99,7 +103,11 @@ function Viewer() {
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
-    return <Comment key={key} commentData={comment} />;
+    return <Comment 
+      key={key} 
+      user_id={selectedUser}
+      book_id={bookId} 
+      commentData={comment} />;
   });
 
   return (
