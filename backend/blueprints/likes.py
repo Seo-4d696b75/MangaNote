@@ -21,15 +21,15 @@ def index(book_id, comment_id):
     })
 
 @likes.route('/likes/<int:user_id>',  methods=['PUT'])
-def put_likes(book_id, comment_id, user_id):
+def like(book_id, comment_id, user_id):
     exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).first()
     if exist_likes is not None:
-        return jsonify({"status": "Bad Request", "message": "The user already liked this comment."}), 400
+        return jsonify({"status": "Bad Request", "message": "Already liked this comment."}), 400
     
     try:
         (user_name, ) = db.session.query(User.name).filter(User.id == user_id).one()
     except:
-        return jsonify({"status": "Not Found", "message": "The user not found."}), 404
+        return jsonify({"status": "Not Found", "message": "User does not exist."}), 404
 
     like = Like(user_id, comment_id, user_name, user_name)
     db.session.add(like)
@@ -38,15 +38,15 @@ def put_likes(book_id, comment_id, user_id):
         db.session.commit()
     except:
         db.session.rollback()
-        return jsonify({"status": "Internal Sever Error"}), 503
+        return jsonify({"status": "Internal Server Error"}), 500
 
     return None, 204
 
 @likes.route('/likes/<int:user_id>',  methods=['DELETE'])
-def delete_likes(book_id, comment_id, user_id):
+def unlike(book_id, comment_id, user_id):
     exist_likes = db.session.query(Like).filter(Like.user_id == user_id, Like.comment_id == comment_id).first()
     if exist_likes is None:
-        return jsonify({"status": "Bad Request", "message": "The user hasn't liked this comment."}), 400
+        return jsonify({"status": "Bad Request", "message": "Does not like this comment."}), 400
     else:
         db.session.delete(exist_likes)
 
@@ -54,6 +54,6 @@ def delete_likes(book_id, comment_id, user_id):
         db.session.commit()
     except:
         db.session.rollback()
-        return jsonify({"status": "Internal Sever Error"}), 503
+        return jsonify({"status": "Internal Server Error"}), 500
 
     return None, 204
