@@ -12,7 +12,7 @@ function Menu(props) {
         position: "absolute",
         top: `95%`,
         left: `30%`,
-      };
+    };
     
     const handleCommentChange = () =>{
         props.commentChange();
@@ -26,6 +26,12 @@ function Menu(props) {
         props.menuChange();
     }
     
+    const userDropdown = props.users.map((user)=>{
+            return(
+                <DropdownItem eventKey={user.user_id}>{user.user_id}</DropdownItem>
+            )
+        }
+    )
 
     return(
         
@@ -42,9 +48,7 @@ function Menu(props) {
           variant="secondary"
           onSelect = {(eventKey) => handleUserChange(eventKey)}
         >
-        <DropdownItem eventKey={1}>1</DropdownItem>
-        <DropdownItem eventKey={2}>2</DropdownItem>
-        <DropdownItem eventKey={3}>3</DropdownItem>
+        {userDropdown}
         </DropdownButton>
         
         </ButtonGroup>

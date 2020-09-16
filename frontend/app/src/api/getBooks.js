@@ -1,7 +1,7 @@
 import {getdefault} from "./APIUtils";
 
-export function getBooks(bookid) {
-    const res = getdefault(`books/${bookid}`);
+export function getBooks(bookId) {
+    const res = getdefault(`books/${bookId}`);
     return res;
 }
 
