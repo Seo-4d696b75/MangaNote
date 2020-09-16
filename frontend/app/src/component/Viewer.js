@@ -7,27 +7,44 @@ import Menu from './Menu';
 import CommentModal from './CommentModal';
 
 import getComments from '../api/getComments';
+import { getBooks } from "../api/getBooks";
+
 import convertToRelativePosition from '../logic/convertToRelativePosition';
 import useLongPress from '../logic/useLongPress';
 import "./Viewer.css";
 
+
 function Viewer() {
   const [pageNumber, setPageNumber] = useState(0);
   const [comments, setComments] = useState([]);
+  const [mangaImage,setMangaImage] = useState([]);
   const [isMenuAppear,setIsMenuAppear] = useState(false);
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
+  const bookId = 1;
 
-  const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
-  const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
-  const mangaImagesLength = 3;
+  const users = [];
+  for (let i = 1;i < 10;i++){
+      users.push({user_id:i});
+  }
+  
+  const mangaImagesLength = 10;
 
-  useEffect(() => {
+  useEffect(async () => {
     // 初回だけ実行される処理
-    const bookId = 0;
-    setComments(getComments(bookId));
-  }, []);
+    const params = {
+      user_id:selectedUser,
+      page:0,
+      limit:mangaImagesLength-1
+    }
+    const comments = await getComments(bookId,params);
+    setComments(comments);
+    //console.log(comments);
+    const books = await getBooks(bookId);
+    setMangaImage(books.images);
+    //console.log(mangaImage);
+  }, [selectedUser]);
 
   const handleLongPress = (event) => {
     const {pageX, pageY} = event;
@@ -38,8 +55,9 @@ function Viewer() {
   }
 
   const handleClick = (event) => {
-    const {pageX, pageY} = event;
-    const [x, y] = convertToRelativePosition(pageX, pageY);
+    const {clientX, clientY} = event;
+    const [x, y] = convertToRelativePosition(clientX, clientY);
+
 
     if(x <= 100/3) { // 左側をクリック
       setPageNumber(Math.max(pageNumber-1, 0));
@@ -56,7 +74,6 @@ function Viewer() {
 
   const commentChange= () => {
     setIsCommentAppear(!(isCommentAppear));
-    //console.log("comment",isCommentAppear);
   }
 
   const menuChange = () => {
@@ -64,7 +81,6 @@ function Viewer() {
   }
   const userChange = (user_id) =>{
     setSelectedUser(+user_id);
-    
   }
 
   const appendComment = (commentData) => {
@@ -93,7 +109,7 @@ function Viewer() {
         <div style={{position: "relative"}}>
           <Image
             id="mangaImage"
-            src={mangaImageUrl}
+            src={mangaImage[pageNumber]}
             {...longPressEvent}
           />
           {isCommentAppear
@@ -105,6 +121,7 @@ function Viewer() {
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                users = {users}
               />
             : null
           }
