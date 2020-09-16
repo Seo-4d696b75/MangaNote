@@ -5,9 +5,9 @@ import './MiniMap.css';
 
 export class MapContainer extends React.Component {
 
-  onMapClicked(){
-    console.log("map clicked");
-  }
+	onMapReady(props,map){
+
+	}
 
   render(){
     const pos = {
@@ -20,11 +20,11 @@ export class MapContainer extends React.Component {
 				<Map className="Map"
 					google={this.props.google}
 					zoom={14}
+					onReady={this.onMapReady.bind(this)}
 					center={pos}
 					initialCenter={pos}
-					onClick={this.onMapClicked.bind(this)}
-					fullscreenControl={false}
-					streetViewControl={false}
+					fullscreenControl={true}
+					streetViewControl={true}
 					zoomControl={false}
 					gestureHandling={"auto"}
 					mapTypeControl={false}>
@@ -32,6 +32,7 @@ export class MapContainer extends React.Component {
 						visible={true}
 						position={pos}>
 					</Marker>
+
 				</Map>
 			</div>
 		);

@@ -50,7 +50,11 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y}) 
         overlay={ type === 'map' ? (
           
           <Popover className='Map-popover'>
-            <Popover.Title as='h3'>{title}</Popover.Title>
+            <Popover.Title as='h3'>
+              <a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(5)},${longitude.toFixed(5)}`}>
+                {title}
+              </a>
+            </Popover.Title>
             <Popover.Content >
               <div className='Place-content'>
                 <MiniMap lat={latitude} lng={longitude}></MiniMap>
