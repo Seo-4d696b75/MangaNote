@@ -1,5 +1,6 @@
 flask
-pymysql
+psycopg2
 flask-sqlalchemy
 flask-migrate
 flask_cors
+gunicorn
