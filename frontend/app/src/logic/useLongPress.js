@@ -12,6 +12,7 @@ const useLongPress = (onLongPress, onClick, {shouldPreventDefault = true, delay 
       });
       target.current = event.target;
     }
+    event.persist();
     timeout.current = setTimeout(() => {
       onLongPress(event);
       setLongPressTriggered(true);

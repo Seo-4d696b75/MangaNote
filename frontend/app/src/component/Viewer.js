@@ -18,7 +18,6 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
-  const handleModalClose = () => setShow(false);
 
   const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
   const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
@@ -31,7 +30,10 @@ function Viewer() {
   }, []);
 
   const handleLongPress = (event) => {
-    console.log("LongPress");
+    const {pageX, pageY} = event;
+    const [x, y] = convertToRelativePosition(pageX, pageY);
+    const newComment = {x, y, type: "comment", page: pageNumber};
+    setComments([...comments, newComment]);
     setShow(true);
   }
 
@@ -64,6 +66,21 @@ function Viewer() {
     setSelectedUser(+user_id);
     
   }
+
+  const appendComment = (commentData) => {
+    const {type, text} = commentData;
+    console.log(text);
+    let newComment = comments.pop();
+    newComment = {...newComment, type, text};
+    setComments([...comments, newComment]);
+    setShow(false);
+  }
+
+  const handleModalClose = () => {
+    comments.pop();
+    setComments(comments);
+    setShow(false);
+  }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
@@ -95,6 +112,7 @@ function Viewer() {
         <CommentModal
           show={show}
           handleClose={handleModalClose}
+          appendComment={appendComment}
         ></CommentModal>
       </Container>
     </div>
