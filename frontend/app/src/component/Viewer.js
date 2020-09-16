@@ -4,6 +4,7 @@ import Image from 'react-bootstrap/Image';
 
 import Comment from './Comment';
 import Menu from './Menu';
+import CommentModal from './CommentModal';
 
 import getComments from '../api/getComments';
 import convertToRelativePosition from '../logic/convertToRelativePosition';
@@ -16,6 +17,8 @@ function Viewer() {
   const [isMenuAppear,setIsMenuAppear] = useState(false);
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
+  const [show, setShow] = useState(false);
+
   const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
   const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
   const mangaImagesLength = 3;
@@ -27,7 +30,11 @@ function Viewer() {
   }, []);
 
   const handleLongPress = (event) => {
-    console.log("LongPress");
+    const {pageX, pageY} = event;
+    const [x, y] = convertToRelativePosition(pageX, pageY);
+    const newComment = {x, y, type: "comment", page: pageNumber};
+    setComments([...comments, newComment]);
+    setShow(true);
   }
 
   const handleClick = (event) => {
@@ -59,6 +66,21 @@ function Viewer() {
     setSelectedUser(+user_id);
     
   }
+
+  const appendComment = (commentData) => {
+    const {type, text} = commentData;
+    console.log(text);
+    let newComment = comments.pop();
+    newComment = {...newComment, type, text};
+    setComments([...comments, newComment]);
+    setShow(false);
+  }
+
+  const handleModalClose = () => {
+    comments.pop();
+    setComments(comments);
+    setShow(false);
+  }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
@@ -87,6 +109,11 @@ function Viewer() {
             : null
           }
         </div>
+        <CommentModal
+          show={show}
+          handleClose={handleModalClose}
+          appendComment={appendComment}
+        ></CommentModal>
       </Container>
     </div>
   );
