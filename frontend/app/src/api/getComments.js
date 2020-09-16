@@ -13,6 +13,7 @@ function getComments(mangaId) {
       page: 0,
       x: 50,
       y: 50,
+      like_cnt: 20,
       is_liked: false
     },
     {
@@ -25,6 +26,7 @@ function getComments(mangaId) {
       page: 1,
       x: 20,
       y: 40,
+      like_cnt: 1,
       is_liked: true
     },
     {
@@ -37,6 +39,7 @@ function getComments(mangaId) {
       page: 2,
       x: 30,
       y: 50,
+      like_cnt: 30,
       is_liked: false
     },
     {
@@ -49,6 +52,7 @@ function getComments(mangaId) {
       page: 2,
       x: 10,
       y: 80,
+      like_cnt: 100,
       is_liked: false
     }
   ]

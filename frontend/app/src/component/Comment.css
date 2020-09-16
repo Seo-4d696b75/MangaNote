@@ -32,7 +32,7 @@
 }
 
 .Comment-text{
-  padding-bottom: 24px;
+  padding-bottom: 20px;
   margin: 0;
 }
 
@@ -40,7 +40,23 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  height: 30px;
+  height: 24px;
   display: flex;
-  padding: 3px;
+  padding-top: 4px;
+}
+
+.Comment-like-icon{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.Comment-like-cnt{
+  font-size: small;
+  margin-left: 2px;
+  margin-right: 0;
+}
+
+.Comment-sns-button{
+  margin-top: -8px;
 }

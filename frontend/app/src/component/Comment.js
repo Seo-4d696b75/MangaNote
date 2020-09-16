@@ -84,14 +84,20 @@ function Comment({commentData}) {
               <p className='Comment-text'>{text}</p>
               <div className='Action-container'>
                 <img
+                  className='Comment-like-icon'
                   src={isLiked ? heartFill : heart}
-                  style={{height: "20px", width: "20px", margin: "5px"}}
                   onClick={() => setIsLiked(!isLiked)}
                 />
+                <div 
+                  className='Comment-like-cnt'
+                  style={{color: isLiked ? 'red':'white'}}>
+                  {like_cnt}
+                </div>
                 <TwitterShareButton 
+                  className='Comment-sns-button'
                   url={'https://url-to-image/or/page-has-thumbnail'} 
                   title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
-                  <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent',filter:'drop-shadow(10px 10px 10px rgba(1,1,1,0.6))'}} iconFillColor='#1DA1F2'/>
+                  <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>
                 </TwitterShareButton>
               </div>
             </div>
