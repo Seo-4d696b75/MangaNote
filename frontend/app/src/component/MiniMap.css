@@ -1,0 +1,25 @@
+.Map-popover{
+  width: 360px;
+  height: auto;
+}
+
+.Place-content{
+  width: auto;
+  height: auto;
+}
+
+.Map-container{
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+
+.Comment-container{
+  padding: 5px;
+  width: 100%;
+  height: auto;
+}
+
+.Place-coordinate{
+  font-size: x-small;
+}

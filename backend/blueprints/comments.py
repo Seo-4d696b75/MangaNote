@@ -39,6 +39,7 @@ def get_comments(book_id):
             'x': c.x,
             'y': c.y,
             'user_name': c.created_by,
+            'date': c.created_date,
             'is_liked': len(list(filter(lambda like: like.user_id == user_id, c.likes))) > 0,
             'like_cnt': len(c.likes)
         }, comments))
