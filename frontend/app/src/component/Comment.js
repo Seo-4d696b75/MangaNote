@@ -10,14 +10,18 @@ import heart from '../images/comic/heart.svg';
 import heartFill from '../images/comic/heart-fill.svg';
 
 function Comment({commentData}) {
-  const {type, title, text, longitude, latitude, x, y} = commentData;
+  const {type, title, text, longitude, latitude, x, y, like_cnt} = commentData;
   const [isLiked, setIsLiked] = useState(commentData.is_liked);
+  const max_font_size = 3;
+  const min_font_size = 1;
+  const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
   const style = {
     color: "red",
     position: "absolute",
     top: `${y}%`,
     left: `${x}%`,
-    cursor: "pointer"
+    cursor: "pointer",
+    fontSize: `${font_size.toFixed(1)}rem`
   };
 
   let icon;
