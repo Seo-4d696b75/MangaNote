@@ -29,11 +29,9 @@ const useLongPress = (onLongPress, onClick, {shouldPreventDefault = true, delay 
   }, [shouldPreventDefault, onClick, longPressTriggered]);
 
   return {
-    onMouseDown: e => start(e),
-    onTouchStart: e => start(e),
-    onMouseUp: e => clear(e),
-    onMouseLeave: e => clear(e, false),
-    onTouchEnd: e => clear(e)
+    onPointerDown: e => start(e),
+    onPointerUp: e => clear(e),
+    onPointerLeave: e => clear(e, false),
   };
 };
 

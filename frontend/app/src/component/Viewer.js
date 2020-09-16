@@ -55,9 +55,8 @@ function Viewer() {
   }
 
   const handleClick = (event) => {
-    const {clientX, clientY} = event;
-    const [x, y] = convertToRelativePosition(clientX, clientY);
-
+    const {pageX, pageY} = event;
+    const [x, y] = convertToRelativePosition(pageX, pageY);
 
     if(x <= 100/3) { // 左側をクリック
       setPageNumber(Math.max(pageNumber-1, 0));
