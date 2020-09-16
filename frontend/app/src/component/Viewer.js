@@ -84,7 +84,7 @@ function Viewer() {
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
-    return <Comment key={key} {...comment} />;
+    return <Comment key={key} commentData={comment} />;
   });
 
   return (

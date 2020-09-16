@@ -6,7 +6,12 @@ import Popover from 'react-bootstrap/Popover';
 import './Comment.css';
 import { TwitterShareButton, TwitterIcon} from 'react-share';
 
-function Comment({user_id, type, title, text, longitude, latitude, page, x, y, like_cnt, is_liked}) {
+import heart from '../images/comic/heart.svg';
+import heartFill from '../images/comic/heart-fill.svg';
+
+function Comment({commentData}) {
+  const {type, title, text, longitude, latitude, x, y, like_cnt} = commentData;
+  const [isLiked, setIsLiked] = useState(commentData.is_liked);
   const max_font_size = 3;
   const min_font_size = 1;
   const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
@@ -78,6 +83,11 @@ function Comment({user_id, type, title, text, longitude, latitude, page, x, y, l
             <div className='Comment-container'>
               <p className='Comment-text'>{text}</p>
               <div className='Action-container'>
+                <img
+                  src={isLiked ? heartFill : heart}
+                  style={{height: "20px", width: "20px", margin: "5px"}}
+                  onClick={() => setIsLiked(!isLiked)}
+                />
                 <TwitterShareButton 
                   url={'https://url-to-image/or/page-has-thumbnail'} 
                   title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
