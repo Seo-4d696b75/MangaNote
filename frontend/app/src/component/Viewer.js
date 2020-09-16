@@ -102,6 +102,17 @@ function Viewer() {
     setComments(comments);
     setShow(false);
   }
+
+  // Commentコンポーネントでデータに変更（いいね！）あったとき反映する
+  const onLikeChanged = (comment_id, is_liked, like_cnt) => {
+    setComments(comments.map( comment => {
+      if ( comment.id === comment_id ){
+        comment.is_liked = is_liked;
+        comment.like_cnt = like_cnt;
+      }
+      return comment;
+    }));
+  }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
@@ -109,7 +120,8 @@ function Viewer() {
       key={key} 
       user_id={selectedUser}
       book_id={bookId} 
-      commentData={comment} />;
+      commentData={comment}
+      callback={onLikeChanged} />;
   });
 
   return (

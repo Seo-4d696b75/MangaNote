@@ -12,9 +12,9 @@ import heartFill from '../images/comic/heart-fill.svg';
 import put_good from '../api/putGood';
 
 function Comment(props) {
-  const book_id = props.book_id;
-  const {type, title, text, longitude, latitude, x, y, like_cnt, is_liked} = props.commentData;
-  const [isLiked, setIsLiked] = useState(is_liked);
+  const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
+  const [isLiked, setIsLiked] = useState(props.commentData.is_liked);
+  const [like_cnt, setLikeCnt] = useState(props.commentData.like_cnt);
   const [like_animated, setLikeAnimated] = useState(false);
   const max_font_size = 3;
   const min_font_size = 1;
@@ -55,8 +55,9 @@ function Comment(props) {
     console.log({title, text});
   }
 
-  const onLikeClicked = () => {
+  const onLikeClicked = async () => {
     //TODO call API
+    const before_cnt = like_cnt;
     if ( isLiked ){
       setIsLiked(false);
     } else {
@@ -66,6 +67,18 @@ function Comment(props) {
       setTimeout(() => {
         setLikeAnimated(false);
       }, 200);
+      setLikeCnt(before_cnt + 1);
+      var res = await put_good(props.book_id, id, props.user_id);
+      if ( res.status === 204 ){
+        // success
+        console.log('success to put like!', res.url);
+        props.callback(id, true, before_cnt + 1);
+      } else {
+        // failure
+        console.log('fail')
+        setIsLiked(false);
+        setLikeCnt(before_cnt);
+      }
     }
   }
 
