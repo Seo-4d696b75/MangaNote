@@ -13,6 +13,7 @@ function getComments(mangaId) {
       page: 0,
       x: 50,
       y: 50,
+      is_liked: false
     },
     {
       user_id: 1,
@@ -24,6 +25,7 @@ function getComments(mangaId) {
       page: 1,
       x: 20,
       y: 40,
+      is_liked: true
     },
     {
       user_id: 2,
@@ -35,6 +37,7 @@ function getComments(mangaId) {
       page: 2,
       x: 30,
       y: 50,
+      is_liked: false
     },
     {
       user_id: 3,
@@ -46,6 +49,7 @@ function getComments(mangaId) {
       page: 2,
       x: 10,
       y: 80,
+      is_liked: false
     }
   ]
   return dummyData;
