@@ -1,0 +1,46 @@
+.Map-popover{
+  width: 360px;
+  height: auto;
+}
+
+.Place-content{
+  width: auto;
+  height: auto;
+}
+
+.Map-container{
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+
+.Place-comment-container{
+  padding: 5px;
+  width: 100%;
+  height: auto;
+}
+
+.Place-coordinate{
+  font-size: x-small;
+}
+
+
+.Comment-container{
+  position: relative;
+  height: auto;
+  min-height: 30px;
+}
+
+.Comment-text{
+  padding-bottom: 24px;
+  margin: 0;
+}
+
+.Action-container{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 30px;
+  display: flex;
+  padding: 3px;
+}

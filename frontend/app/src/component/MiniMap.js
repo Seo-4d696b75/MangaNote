@@ -1,6 +1,6 @@
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import React from "react";
-import './MiniMap.css';
+import './Comment.css';
 
 
 export class MapContainer extends React.Component {
