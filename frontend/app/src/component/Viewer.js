@@ -67,7 +67,7 @@ function Viewer() {
     }
   }
 
-  const defaultOptions = {shouldPreventDefault: true, delay: 500,};
+  const defaultOptions = {shouldPreventDefault: true, delay: 500};
 
   const longPressEvent = useLongPress(handleLongPress, handleClick, defaultOptions);
 

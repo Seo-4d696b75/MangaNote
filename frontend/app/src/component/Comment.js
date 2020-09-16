@@ -27,14 +27,14 @@ function Comment({commentData}) {
 
   let icon;
   switch(type) {
-    case 'comment':
+    case 1:
       icon = '💬'; 
       break;
-    case 'spoiler': 
-      icon = '🤐'; 
-      break;
-    case 'map': 
+    case 2:
       icon = '📍'; 
+      break;
+    case 3:
+      icon = '🤐'; 
       break;
   }
 
@@ -72,7 +72,7 @@ function Comment({commentData}) {
       <OverlayTrigger
         trigger="click"
         placement={placement}
-        overlay={ type === 'map' ? (
+        overlay={ type === 2 ? (
           
           <Popover className='Map-popover'>
             <Popover.Title as='h3'>
