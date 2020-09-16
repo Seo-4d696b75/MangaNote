@@ -40,7 +40,7 @@ def like(book_id, comment_id, user_id):
         db.session.rollback()
         return jsonify({"status": "Internal Server Error"}), 500
 
-    return None, 204
+    return '', 204
 
 @likes.route('/likes/<int:user_id>',  methods=['DELETE'])
 def unlike(book_id, comment_id, user_id):
@@ -56,4 +56,4 @@ def unlike(book_id, comment_id, user_id):
         db.session.rollback()
         return jsonify({"status": "Internal Server Error"}), 500
 
-    return None, 204
+    return '', 204
