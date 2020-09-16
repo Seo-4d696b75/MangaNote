@@ -17,13 +17,13 @@ def get_comments(book_id):
     limit = request.args.get('limit')
     if user_id is None:
         return jsonify({'message':'query "user_id" missing'}), 400
-    page = 1 if page is None else int(page)
-    limit = 10000 if limit is None else min(1,int(limit))
+    page = 0 if page is None else int(page)
+    limit = 10000 if limit is None else max(1,int(limit))
     try:
         comments = db.session.query(Comment)\
             .filter(
                 Comment.book_id == book_id,
-                Comment.page > page,
+                Comment.page >= page,
                 Comment.page < page+limit )\
             .order_by(Comment.page)\
             .all()
@@ -35,12 +35,12 @@ def get_comments(book_id):
             'text': c.text,
             'longitude': c.longitude,
             'latitude': c.latitude,
+            'page': c.page,
             'x': c.x,
             'y': c.y,
-            'is_liked': db.session.query(func.count(Like.user_id))\
-                .filter(Like.user_id == user_id, Like.comment_id == c.id).scalar() > 0,
-            'like_cnt': db.session.query(func.count(Like.user_id))\
-                .filter(Like.comment_id == c.id ).scalar()
+            'user_name': c.created_by,
+            'is_liked': len(list(filter(lambda like: like.user_id == user_id, c.likes))) > 0,
+            'like_cnt': len(c.likes)
         }, comments))
         return jsonify(comments)
     except Exception as e:
@@ -83,6 +83,10 @@ def post_comment(book_id):
             return jsonify({'message':'query missing > ' + str(key_err)}), 400
         db.session.add(comment)
         db.session.commit()
+        return jsonify({
+            'message': 'success to post a comment',
+            'data': data
+        }), 201
     except Exception as e:
         message = str(e)
         logger.error(message)
