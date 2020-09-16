@@ -8,6 +8,7 @@ import CommentModal from './CommentModal';
 
 import getComments from '../api/getComments';
 import { getBooks } from "../api/getBooks";
+import postComment from "../api/postComment";
 
 import convertToRelativePosition from '../logic/convertToRelativePosition';
 import useLongPress from '../logic/useLongPress';
@@ -49,7 +50,7 @@ function Viewer() {
   const handleLongPress = (event) => {
     const {pageX, pageY} = event;
     const [x, y] = convertToRelativePosition(pageX, pageY);
-    const newComment = {x, y, type: "comment", page: pageNumber};
+    const newComment = {user_id: selectedUser, type: 1, page: pageNumber, x, y};
     setComments([...comments, newComment]);
     setShow(true);
   }
@@ -88,6 +89,7 @@ function Viewer() {
     let newComment = comments.pop();
     newComment = {...newComment, type, text};
     setComments([...comments, newComment]);
+    postComment(bookId, newComment);
     setShow(false);
   }
 

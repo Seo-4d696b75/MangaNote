@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 function CommentModal({show, handleClose, appendComment}) {
-  const [type, setType] = useState("comment");
+  const [type, setType] = useState(1);
   const [text, setText] = useState("");
 
   const handleClick = () => {
@@ -22,11 +22,11 @@ function CommentModal({show, handleClose, appendComment}) {
             <Form.Label>タグ</Form.Label>
             <Form.Control
               as="select"
-              onChange={event => {setType(event.target.value)}}
+              onChange={event => {setType(parseInt(event.target.value))}}
             >
-              <option value="comment">💬　コメント</option>
-              <option value="spoiler">🤐　ネタバレ</option>
-              <option value="map">📍　聖地</option>
+              <option value="1">💬　コメント</option>
+              <option value="3">🤐　ネタバレ</option>
+              <option value="2">📍　聖地</option>
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="exampleForm.ControlTextarea1">
