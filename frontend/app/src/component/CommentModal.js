@@ -76,7 +76,11 @@ function CommentModal({show, handleClose, appendComment}) {
           <Button variant="secondary" onClick={handleClose}>
             キャンセル
           </Button>
-          <Button variant="primary" onClick={handleClick}>
+          <Button
+            variant="primary"
+            disabled={!text.length}
+            onClick={handleClick}
+          >
             投稿
           </Button>
         </Modal.Footer>
