@@ -1,12 +1,11 @@
 
-const baseurl = "http://localhost:4000/api/";
+const baseurl = "https://manga-note-api.herokuapp.com/api/";
 
 
 export const getdefault = (endpoint,params) =>{
     
     const url = new URL(baseurl + endpoint);
     url.search = new URLSearchParams(params).toString();
-
     return fetch(url)
     .then((response) => response.json())
     .catch((error =>{
@@ -27,16 +26,17 @@ export const postdefault = async (endpoint, params) => {
     return response.json()
 }
 
-export const putdefault = async (endpoint, userid) => {
-    const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
+export const putdefault = async (endpoint,bookid,commentid,userid) => {
+    const response = await fetch(`${baseurl}${endpoint}/${bookid}/comments/${commentid}/likes/${userid}`, {
         method: "PUT",
     }).catch((err) => {
         throw err;
     });
+    return response;
 };
 
-export const deletedefault = async (endpoint, userid) => {
-    const response = await fetch(`${baseurl}${endpoint}/${userid}`, {
+export const deletedefault = async (endpoint,bookid,commentid,userid) => {
+    const response = await fetch(`${baseurl}${endpoint}/${bookid}/comments/${commentid}/likes/${userid}`, {
         method: "DELETE",
     }).catch((err) => {
         throw err;

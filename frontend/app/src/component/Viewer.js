@@ -4,30 +4,59 @@ import Image from 'react-bootstrap/Image';
 
 import Comment from './Comment';
 import Menu from './Menu';
+import CommentModal from './CommentModal';
 
 import getComments from '../api/getComments';
+import { getBooks } from "../api/getBooks";
+import postComment from "../api/postComment";
+
 import convertToRelativePosition from '../logic/convertToRelativePosition';
 import useLongPress from '../logic/useLongPress';
 import "./Viewer.css";
 
+
 function Viewer() {
   const [pageNumber, setPageNumber] = useState(0);
   const [comments, setComments] = useState([]);
+  const [mangaImage,setMangaImage] = useState([]);
   const [isMenuAppear,setIsMenuAppear] = useState(false);
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
-  const user = [{username:"太郎",user_id:1},{username:"次郎",user_id:2},{username:"三郎",user_id:3}];
-  const mangaImageUrl = `https://raw.githubusercontent.com/Seo-4d696b75/MangaNote/frontend_fukazawanatsuki/frontend/app/src/images/comic/${pageNumber}.png`
-  const mangaImagesLength = 3;
+  const [show, setShow] = useState(false);
+  const bookId = 1;
+
+  const users = [];
+  for (let i = 1;i < 10;i++){
+      users.push({user_id:i});
+  }
+  
+  const mangaImagesLength = 10;
 
   useEffect(() => {
-    // 初回だけ実行される処理
-    const bookId = 0;
-    setComments(getComments(bookId));
-  }, []);
+    async function fetchData(){
+
+      // 初回だけ実行される処理
+      const params = {
+        user_id: selectedUser,
+        page: 0,
+        limit: mangaImagesLength - 1
+      };
+      var [comments, books] = await Promise.all([
+        getComments(bookId, params),
+        getBooks(bookId),
+      ]);
+      setComments(comments);
+      setMangaImage(books.images);
+    }
+    fetchData();
+  }, [selectedUser]);
 
   const handleLongPress = (event) => {
-    console.log("LongPress");
+    const {pageX, pageY} = event;
+    const [x, y] = convertToRelativePosition(pageX, pageY);
+    const newComment = {user_id: selectedUser, type: 1, page: pageNumber, x, y};
+    setComments([...comments, newComment]);
+    setShow(true);
   }
 
   const handleClick = (event) => {
@@ -43,13 +72,12 @@ function Viewer() {
     }
   }
 
-  const defaultOptions = {shouldPreventDefault: true, delay: 500,};
+  const defaultOptions = {shouldPreventDefault: true, delay: 500};
 
   const longPressEvent = useLongPress(handleLongPress, handleClick, defaultOptions);
 
   const commentChange= () => {
     setIsCommentAppear(!(isCommentAppear));
-    //console.log("comment",isCommentAppear);
   }
 
   const menuChange = () => {
@@ -57,12 +85,43 @@ function Viewer() {
   }
   const userChange = (user_id) =>{
     setSelectedUser(+user_id);
-    
+  }
+
+  const appendComment = (commentData) => {
+    const {type, text} = commentData;
+    console.log(text);
+    let newComment = comments.pop();
+    newComment = {...newComment, type, text};
+    setComments([...comments, newComment]);
+    postComment(bookId, newComment);
+    setShow(false);
+  }
+
+  const handleModalClose = () => {
+    comments.pop();
+    setComments(comments);
+    setShow(false);
+  }
+
+  // Commentコンポーネントでデータに変更（いいね！）あったとき反映する
+  const onLikeChanged = (comment_id, is_liked, like_cnt) => {
+    setComments(comments.map( comment => {
+      if ( comment.id === comment_id ){
+        comment.is_liked = is_liked;
+        comment.like_cnt = like_cnt;
+      }
+      return comment;
+    }));
   }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
-    return <Comment key={key} {...comment} />;
+    return <Comment 
+      key={key} 
+      user_id={selectedUser}
+      book_id={bookId} 
+      commentData={comment}
+      callback={onLikeChanged} />;
   });
 
   return (
@@ -71,7 +130,7 @@ function Viewer() {
         <div style={{position: "relative"}}>
           <Image
             id="mangaImage"
-            src={mangaImageUrl}
+            src={mangaImage[pageNumber]}
             {...longPressEvent}
           />
           {isCommentAppear
@@ -83,10 +142,16 @@ function Viewer() {
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                users = {users}
               />
             : null
           }
         </div>
+        <CommentModal
+          show={show}
+          handleClose={handleModalClose}
+          appendComment={appendComment}
+        ></CommentModal>
       </Container>
     </div>
   );
