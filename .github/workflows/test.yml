@@ -5,6 +5,7 @@ on:
       - master
       - backend
   pull_request:
+    branches:
       - master
 jobs:
   test:
