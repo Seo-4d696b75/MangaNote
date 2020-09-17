@@ -13,9 +13,9 @@ CORS(app)
 
 app.register_blueprint(users, url_prefix="/api/users")
 app.register_blueprint(books, url_prefix="/api/books")
-app.register_blueprint(comments, url_prefix="/api/books/<book_id>")
+app.register_blueprint(comments, url_prefix="/api/books/<int:book_id>")
 app.register_blueprint(
-    likes, url_prefix="/api/books/<book_id>/comments/<comment_id>")
+    likes, url_prefix="/api/books/<int:book_id>/comments/<int:comment_id>")
 init_db(app)
 register_command(app)
 

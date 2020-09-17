@@ -42,7 +42,7 @@ def get_list():
     return jsonify(result)
 
 
-@books.route('/<book_id>')
+@books.route('/<int:book_id>')
 def get_detail(book_id):
     try:
         book = Book.query.get(book_id)
