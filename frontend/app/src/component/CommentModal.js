@@ -18,10 +18,11 @@ function CommentModal({show, handleClose, appendComment}) {
       appendComment({type, text});
     } else {
       type = 2;
-      const title = "ダミー病院"
+      const title = "ダミースーパーマーケット"
+      const text = "海の上のスーパーマーケットです"
       const longitude = 0;
       const latitude = 0;
-      appendComment({type, title, longitude, latitude});
+      appendComment({type, text, title, longitude, latitude});
     }
   }
 
