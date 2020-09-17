@@ -3,3 +3,5 @@ pymysql
 flask-sqlalchemy
 flask-migrate
 flask_cors
+flask_testing
+pytest

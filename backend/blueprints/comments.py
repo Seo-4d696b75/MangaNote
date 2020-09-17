@@ -95,10 +95,13 @@ def post_comment(book_id):
         except KeyError as key_err:
             return jsonify({'message':'param missing > ' + str(key_err)}), 400
         db.session.add(comment)
+        db.session.flush()
+        comment_id = comment.id
         db.session.commit()
         return jsonify({
             'message': 'success to post a comment',
-            'data': data
+            'data': data,
+            'comment_id': comment_id
         }), 201
     except Exception as e:
         message = str(e)
