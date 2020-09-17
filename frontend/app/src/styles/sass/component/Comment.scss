@@ -15,48 +15,6 @@
 // }
 
 
-.Place-coordinate{
-  font-size: x-small;
-}
-
-.place {
-  @extend .comment;
-
-  &__container {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  &__title {
-    font-weight: bold;
-    font-size: large;
-    color: dimgray;
-    text-decoration: none;
-
-    &:hover {
-      color: mediumturquoise;
-      text-decoration: underline dashed;
-    }
-  }
-
-  &__map {
-    position: relative;
-  }
-
-  &__coordinate {
-    font-size: x-small;
-  }
-  &__text {
-    margin: 8px 0 0 0;
-  }
-
-  &__footer {
-    @extend %footer;
-  }
-  
-}
-
 %footer {
   display: flex;
   align-items: center;
@@ -70,6 +28,10 @@
 
   &__container{
     padding: 10px;
+  }
+
+  &__coordinate{
+    font-size: x-small;
   }
 
   &__text{
@@ -141,4 +103,43 @@
     /* もとのサイズに戻す */
     transform: scale(1.0);
   }
+}
+
+
+.place {
+  @extend .comment;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: large;
+    color: dimgray;
+    text-decoration: none;
+
+    &:hover {
+      color: mediumturquoise;
+      text-decoration: underline dashed;
+    }
+  }
+
+  &__map {
+    position: relative;
+  }
+
+  &__coordinate {
+    font-size: x-small;
+  }
+  &__text {
+    margin: 8px 0 0 0;
+  }
+
+  &__footer {
+    @extend %footer;
+  }
+  
 }
