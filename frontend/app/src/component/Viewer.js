@@ -23,6 +23,7 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
+  const [animatedCommentID, setAnimatedCommentID] = useState(undefined);
   const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
@@ -43,10 +44,10 @@ function Viewer() {
       const params = {
         user_id: selectedUser,
         page: 0,
-        limit: mangaImagesLength - 1
+        limit: mangaImagesLength
       };
-      const comments = await getComments(bookId, params);
-      setComments(comments);
+      const list = await getComments(bookId, params);
+      setComments(list);
     }
     fetchComments();
   }, [selectedUser]);
@@ -83,10 +84,13 @@ function Viewer() {
   const menuChange = () => {
     setIsMenuAppear(!(isMenuAppear));
   }
+  
   const userChange = (user_id) =>{
+    console.log(`user changed ${selectedUser} > ${parseInt(user_id)}`);
     setSelectedUser(+user_id);
   }
 
+  // コメント追加
   const appendComment = (commentData) => {
     const {type, text, title, longitude, latitude} = commentData;
     console.log(text);
@@ -114,10 +118,10 @@ function Viewer() {
     }));
   }
   
-  const commentList = comments.map((comment, key) => {
+  const commentList = comments.map( comment => {
     if(comment.page != pageNumber) return;
     return <Comment 
-      key={key} 
+      key={comment.id} 
       user_id={selectedUser}
       book_id={bookId} 
       commentData={comment}

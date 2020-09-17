@@ -1,6 +1,6 @@
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import React from "react";
-import './Comment.css';
+import "../styles/sass/component/Comment.scss";
 
 
 export class MapContainer extends React.Component {
@@ -15,7 +15,7 @@ export class MapContainer extends React.Component {
 			lng: this.props.lng,
 		};
 		return (
-			<div className='Map-container'>
+			<div className='map-container'>
 
 				<Map className="Map"
 					google={this.props.google}

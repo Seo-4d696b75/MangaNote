@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "../styles/sass/component/Comment.scss";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import MiniMap from './MiniMap';
 import Popover from 'react-bootstrap/Popover';
 import { TwitterShareButton, TwitterIcon} from 'react-share';
@@ -13,10 +12,11 @@ import put_good from '../api/putGood';
 import delete_good from '../api/deleteGood';
 
 function Comment(props) {
-  const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
-  const [isLiked, setIsLiked] = useState(props.commentData.is_liked);
-  const [like_cnt, setLikeCnt] = useState(props.commentData.like_cnt);
+  const {id, type, title, text, longitude, latitude, x, y, is_liked, like_cnt} = props.commentData;
   const [like_animated, setLikeAnimated] = useState(false);
+
+  // like_cnt, is_liked などは 親コンポーネントがすべて保持する
+
   const max_font_size = 3;
   const min_font_size = 1;
   const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
@@ -57,11 +57,11 @@ function Comment(props) {
   }
 
   const onLikeClicked = async () => {
-    const current_liked = isLiked;
+    const current_liked = is_liked;
     const before_cnt = like_cnt;
     const after_cnt = before_cnt + (current_liked ? -1 : 1);
-    setIsLiked(!current_liked);
-    setLikeCnt(after_cnt);
+   
+    props.callback(id, !current_liked, after_cnt);
     if ( !current_liked ){
       // animation for 0.2 sec
       setLikeAnimated(true);
@@ -75,11 +75,9 @@ function Comment(props) {
     );
     if ( res.status === 204 ){
       console.log('success to put/delete like', res);
-      props.callback(id, !current_liked, after_cnt);
     } else {
       console.log('fail to put/delete like', res);
-      setIsLiked(current_liked);
-      setLikeCnt(before_cnt);
+      props.callback(id, current_liked, before_cnt);
     }
   }
 
@@ -91,17 +89,17 @@ function Comment(props) {
         placement={placement}
 
         overlay={ type === 2 ? (
-          <Popover className='Map-popover'>
+          <Popover className='map-popover'>
             <Popover.Title as='h3'>
               <a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(5)},${longitude.toFixed(5)}`}>
                 {title}
               </a>
             </Popover.Title>
             <Popover.Content>
-              <div className='Place-content'>
+              <div className='place-content'>
                 <MiniMap lat={latitude} lng={longitude}></MiniMap>
-                <div className='Place-comment-container'>
-                  <div className='Place-coordinate'>
+                <div className='place-comment-container'>
+                  <div className='place-coordinate'>
                     {`座標：${latitude>0 ? 'N':'S'}${Math.abs(latitude).toFixed(4)} ${longitude>0 ? 'E':'W'}${Math.abs(longitude).toFixed(4)}`}
                   </div>
                 </div>
@@ -114,17 +112,17 @@ function Comment(props) {
               <p className='comment__text'>{text}</p>
               <div className='comment__footer'>
                 <img
-                  className={`Comment-like-icon ${like_animated ? 'animated' : ''}`}
-                  src={isLiked ? heartFill : heart}
+                  className={`comment-like-icon ${like_animated ? 'animated' : ''}`}
+                  src={is_liked ? heartFill : heart}
                   onClick={onLikeClicked}
                 />
                 <div 
-                  className='Comment-like-cnt'
-                  style={{color: isLiked ? 'red':'white'}}>
+                  className='comment-like-cnt'
+                  style={{color: is_liked ? 'red':'black'}}>
                   {like_cnt}
                 </div>
                 <TwitterShareButton 
-                  className='Comment-sns-button'
+                  className='comment-sns-button'
                   url={'https://url-to-image/or/page-has-thumbnail'} 
                   title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
                   <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>
