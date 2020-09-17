@@ -73,7 +73,7 @@ def post_comment(book_id):
             return jsonify({'message':'no user found'}), 400
         # init comment
         comment = None
-        type_id = data['type']
+        type_id = data.get('type', -1)
         if type_id < 1 or type_id > 3:
             return jsonify({'message':'invalid type value'}), 400
         elif type_id == 2 and any( e is None for e in (
