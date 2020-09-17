@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "../styles/sass/component/Comment.scss";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import MiniMap from './MiniMap';
 import Popover from 'react-bootstrap/Popover';
 import { TwitterShareButton, TwitterIcon} from 'react-share';
@@ -91,17 +90,17 @@ function Comment(props) {
         placement={placement}
 
         overlay={ type === 2 ? (
-          <Popover className='Map-popover'>
+          <Popover className='map-popover'>
             <Popover.Title as='h3'>
               <a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(5)},${longitude.toFixed(5)}`}>
                 {title}
               </a>
             </Popover.Title>
             <Popover.Content>
-              <div className='Place-content'>
+              <div className='place-content'>
                 <MiniMap lat={latitude} lng={longitude}></MiniMap>
-                <div className='Place-comment-container'>
-                  <div className='Place-coordinate'>
+                <div className='place-comment-container'>
+                  <div className='place-coordinate'>
                     {`座標：${latitude>0 ? 'N':'S'}${Math.abs(latitude).toFixed(4)} ${longitude>0 ? 'E':'W'}${Math.abs(longitude).toFixed(4)}`}
                   </div>
                 </div>
@@ -114,17 +113,17 @@ function Comment(props) {
               <p className='comment__text'>{text}</p>
               <div className='comment__footer'>
                 <img
-                  className={`Comment-like-icon ${like_animated ? 'animated' : ''}`}
+                  className={`comment-like-icon ${like_animated ? 'animated' : ''}`}
                   src={isLiked ? heartFill : heart}
                   onClick={onLikeClicked}
                 />
                 <div 
-                  className='Comment-like-cnt'
-                  style={{color: isLiked ? 'red':'white'}}>
+                  className='comment-like-cnt'
+                  style={{color: isLiked ? 'red':'black'}}>
                   {like_cnt}
                 </div>
                 <TwitterShareButton 
-                  className='Comment-sns-button'
+                  className='comment-sns-button'
                   url={'https://url-to-image/or/page-has-thumbnail'} 
                   title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
                   <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>

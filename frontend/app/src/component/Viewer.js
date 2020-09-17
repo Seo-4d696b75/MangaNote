@@ -23,6 +23,7 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
+  const [animatedCommentID, setAnimatedCommentID] = useState(undefined);
   const bookId = 1;
 
   const users = [];
@@ -83,10 +84,12 @@ function Viewer() {
   const menuChange = () => {
     setIsMenuAppear(!(isMenuAppear));
   }
+  
   const userChange = (user_id) =>{
     setSelectedUser(+user_id);
   }
 
+  // コメント追加
   const appendComment = (commentData) => {
     const {type, text} = commentData;
     console.log(text);
