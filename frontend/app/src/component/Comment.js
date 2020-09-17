@@ -10,9 +10,13 @@ import { TwitterShareButton, TwitterIcon} from 'react-share';
 import heart from '../images/comic/heart.svg';
 import heartFill from '../images/comic/heart-fill.svg';
 
-function Comment({commentData}) {
-  const {type, title, text, longitude, latitude, x, y, like_cnt} = commentData;
-  const [isLiked, setIsLiked] = useState(commentData.is_liked);
+import put_good from '../api/putGood';
+import delete_good from '../api/deleteGood';
+
+function Comment(props) {
+  const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
+  const [isLiked, setIsLiked] = useState(props.commentData.is_liked);
+  const [like_cnt, setLikeCnt] = useState(props.commentData.like_cnt);
   const [like_animated, setLikeAnimated] = useState(false);
   const max_font_size = 3;
   const min_font_size = 1;
@@ -53,17 +57,30 @@ function Comment({commentData}) {
     console.log({title, text});
   }
 
-  const onLikeClicked = () => {
-    //TODO call API
-    if ( isLiked ){
-      setIsLiked(false);
-    } else {
-      // animate like icon for 0.2 sec
-      setIsLiked(true);
+  const onLikeClicked = async () => {
+    const current_liked = isLiked;
+    const before_cnt = like_cnt;
+    const after_cnt = before_cnt + (current_liked ? -1 : 1);
+    setIsLiked(!current_liked);
+    setLikeCnt(after_cnt);
+    if ( !current_liked ){
+      // animation for 0.2 sec
       setLikeAnimated(true);
       setTimeout(() => {
         setLikeAnimated(false);
       }, 200);
+    }
+    var res = (current_liked ? 
+      await delete_good(props.book_id, id, props.user_id) :
+      await put_good(props.book_id, id, props.user_id)
+    );
+    if ( res.status === 204 ){
+      console.log('success to put/delete like', res);
+      props.callback(id, !current_liked, after_cnt);
+    } else {
+      console.log('fail to put/delete like', res);
+      setIsLiked(current_liked);
+      setLikeCnt(before_cnt);
     }
   }
 

@@ -23,28 +23,32 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
-  const bookId = 3;
-
+  const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
   }
-  
   const mangaImagesLength = 10;
 
-  useEffect(async () => {
-    // 初回だけ実行される処理
-    const params = {
-      user_id:selectedUser,
-      page:0,
-      limit:mangaImagesLength-1
+  useEffect(() => {
+    async function fetchBooks() {
+      const books = await getBooks(bookId);
+      setMangaImage(books.images);
     }
-    const comments = await getComments(bookId,params);
-    setComments(comments);
-    //console.log(comments);
-    const books = await getBooks(bookId);
-    setMangaImage(books.images);
-    //console.log(mangaImage);
+    fetchBooks();
+  }, []);
+
+  useEffect(() => {
+    async function fetchComments(){
+      const params = {
+        user_id: selectedUser,
+        page: 0,
+        limit: mangaImagesLength - 1
+      };
+      const comments = await getComments(bookId, params);
+      setComments(comments);
+    }
+    fetchComments();
   }, [selectedUser]);
 
   const handleLongPress = (event) => {
@@ -84,10 +88,10 @@ function Viewer() {
   }
 
   const appendComment = (commentData) => {
-    const {type, text} = commentData;
+    const {type, text, title, longitude, latitude} = commentData;
     console.log(text);
     let newComment = comments.pop();
-    newComment = {...newComment, type, text};
+    newComment = {...newComment, type, text, title, longitude, latitude};
     setComments([...comments, newComment]);
     postComment(bookId, newComment);
     setShow(false);
@@ -98,10 +102,26 @@ function Viewer() {
     setComments(comments);
     setShow(false);
   }
+
+  // Commentコンポーネントでデータに変更（いいね！）あったとき反映する
+  const onLikeChanged = (comment_id, is_liked, like_cnt) => {
+    setComments(comments.map( comment => {
+      if ( comment.id === comment_id ){
+        comment.is_liked = is_liked;
+        comment.like_cnt = like_cnt;
+      }
+      return comment;
+    }));
+  }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
-    return <Comment key={key} commentData={comment} />;
+    return <Comment 
+      key={key} 
+      user_id={selectedUser}
+      book_id={bookId} 
+      commentData={comment}
+      callback={onLikeChanged} />;
   });
 
   return (
@@ -118,10 +138,13 @@ function Viewer() {
             : null
           }
           {isMenuAppear
-            ? <Menu
+            ? 
+              <Menu
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                isCommentAppear = {isCommentAppear}
+                isMenuAppear = {isMenuAppear}
                 users = {users}
               />
             : null
