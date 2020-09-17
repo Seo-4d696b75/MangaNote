@@ -10,6 +10,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      APP_DATABASE_HOST: 127.0.0.1
+      APP_DATABASE_NAME: manga-note
+      APP_DATABASE_USER: root
+      APP_DATABASE_PASSWORD: root
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-python@v2
