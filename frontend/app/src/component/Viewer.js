@@ -33,22 +33,24 @@ function Viewer() {
   const mangaImagesLength = 10;
 
   useEffect(() => {
-    async function fetchData(){
+    async function fetchBooks() {
+      const books = await getBooks(bookId);
+      setMangaImage(books.images);
+    }
+    fetchBooks();
+  }, []);
 
-      // 初回だけ実行される処理
+  useEffect(() => {
+    async function fetchComments(){
       const params = {
         user_id: selectedUser,
         page: 0,
         limit: mangaImagesLength - 1
       };
-      var [comments, books] = await Promise.all([
-        getComments(bookId, params),
-        getBooks(bookId),
-      ]);
+      const comments = await getComments(bookId, params);
       setComments(comments);
-      setMangaImage(books.images);
     }
-    fetchData();
+    fetchComments();
   }, [selectedUser]);
 
   const handleLongPress = (event) => {
