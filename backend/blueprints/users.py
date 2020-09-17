@@ -7,6 +7,23 @@ logger = logging.getLogger('app')
 users = Blueprint('users', __name__)
 
 
+@users.route('/<int:id>', methods=['GET'])
+def user_info(id):
+    try:
+        user = User.query.get(id)
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"status": "Internal server error"}), 500
+
+    if user is None:
+        return jsonify({"status": "User not Found"}), 404
+
+    return jsonify({
+        'id': user.id,
+        'user_name': user.name
+    })
+
+
 @users.route('/<int:id>/comments',  methods=['GET'])
 def comments(id):
     try:
