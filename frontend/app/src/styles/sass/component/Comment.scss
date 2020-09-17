@@ -1,0 +1,54 @@
+.Map-popover{
+  width: 360px;
+  height: auto;
+}
+
+.Place-content{
+  width: auto;
+  height: auto;
+}
+
+.Map-container{
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+
+.Place-comment-container{
+  padding: 5px;
+  width: 100%;
+  height: auto;
+}
+
+.Place-coordinate{
+  font-size: x-small;
+}
+
+
+
+.comment {
+  border:0 !important;
+  filter: drop-shadow(rgba(0, 0, 0, 0.4) 0 2px 3px);
+
+  &__container{
+    min-height: 30px;
+    padding: 10px;
+  }
+
+  &__text{
+    margin: 0;
+  }
+
+  &__footer{
+    height: 30px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    img {
+      margin: 0;
+      width: 22px;
+      height: 22px;
+    }
+  }
+}

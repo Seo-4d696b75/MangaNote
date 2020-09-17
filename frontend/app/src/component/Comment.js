@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
+import "../styles/sass/component/Comment.scss";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import MiniMap from './MiniMap';
 import Popover from 'react-bootstrap/Popover';
-import './Comment.css';
 import { TwitterShareButton, TwitterIcon} from 'react-share';
 
 import heart from '../images/comic/heart.svg';
@@ -87,7 +87,32 @@ function Comment({commentData}) {
                   <div className='Place-coordinate'>
                     {`座標：${latitude>0 ? 'N':'S'}${Math.abs(latitude).toFixed(4)} ${longitude>0 ? 'E':'W'}${Math.abs(longitude).toFixed(4)}`}
                   </div>
-                  <p>{text}</p>
+                </div>
+              </Popover.Content>
+            </Popover>
+          ) : (
+            <Popover className="comment">
+              <div className="comment__container">
+                <p className="comment__text">{text}</p>
+                <div className="comment__footer">
+                  <img
+                    src={isLiked ? heartFill : heart}
+                    onClick={() => setIsLiked(!isLiked)}
+                  />
+                  <TwitterShareButton
+                    url={"https://url-to-image/or/page-has-thumbnail"}
+                    title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}
+                  >
+                    <TwitterIcon
+                      size="36"
+                      round={true}
+                      bgStyle={{
+                        fill: "transparent",
+                        filter: "drop-shadow(10px 10px 10px rgba(1,1,1,0.6))",
+                      }}
+                      iconFillColor="#1DA1F2"
+                    />
+                  </TwitterShareButton>
                 </div>
               </div>
             </Popover.Content>
@@ -119,7 +144,9 @@ function Comment({commentData}) {
           </Tooltip>
         )}
       >
-        <p onClick={handleClick} style={style}>{icon}</p>
+        <p onClick={handleClick} style={style}>
+          {icon}
+        </p>
       </OverlayTrigger>
     </div>
   );
