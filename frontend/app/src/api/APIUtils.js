@@ -32,6 +32,7 @@ export const putdefault = async (endpoint,bookid,commentid,userid) => {
     }).catch((err) => {
         throw err;
     });
+    return response;
 };
 
 export const deletedefault = async (endpoint,bookid,commentid,userid) => {
@@ -40,5 +41,6 @@ export const deletedefault = async (endpoint,bookid,commentid,userid) => {
     }).catch((err) => {
         throw err;
     });
+    return response;
 };
 

@@ -17,6 +17,7 @@ def get_comments(book_id):
     limit = request.args.get('limit')
     if user_id is None:
         return jsonify({'message':'query "user_id" missing'}), 400
+    user_id = int(user_id)
     page = 0 if page is None else int(page)
     limit = 10000 if limit is None else max(1,int(limit))
     try:
@@ -55,33 +56,44 @@ def get_comments(book_id):
 @comments.route('/comments', methods=['POST'])
 def post_comment(book_id):
     try:
+        # check existance of the book
         if db.session.query(func.count(Book.id)).filter(Book.id == book_id).scalar() == 0:
             return jsonify({'message':'no book found'}), 400
         data = request.get_json()
+        # get user
         user_id = data.get('user_id', None)
         if user_id is None:
             return jsonify({'message':'user id missing'}), 400
         user = db.session.query(User).filter(User.id == user_id).first()
         if user is None:
             return jsonify({'message':'no user found'}), 400
+        # init comment
         comment = None
+        type_id = data['type']
+        if type_id < 1 or type_id > 3:
+            return jsonify({'message':'invalid type value'}), 400
+        elif type_id == 2 and any( e is None for e in (
+            data.get('title'), 
+            data.get('longitude'), 
+            data.get('latitude') )):
+            return jsonify({'message':'comment of spot needs extra fields'}), 400
         try:
             comment = Comment(
                 book_id = book_id,
-                user_id = data['user_id'],
-                type_id = data['type'],
+                user_id = user_id,
+                type_id = type_id,
                 title = data.get('title', None),
                 text = data['text'],
                 longitude = data.get('longitude', None),
                 latitude = data.get('latitude', None),
                 page = data['page'],
-                x = data.get('x', None),
-                y = data.get('y', None),
+                x = data['x'],
+                y = data['y'],
                 created_by = user.name,
                 modified_by = user.name
             )
         except KeyError as key_err:
-            return jsonify({'message':'query missing > ' + str(key_err)}), 400
+            return jsonify({'message':'param missing > ' + str(key_err)}), 400
         db.session.add(comment)
         db.session.commit()
         return jsonify({

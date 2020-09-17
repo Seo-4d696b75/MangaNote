@@ -32,19 +32,23 @@ function Viewer() {
   
   const mangaImagesLength = 10;
 
-  useEffect(async () => {
-    // 初回だけ実行される処理
-    const params = {
-      user_id:selectedUser,
-      page:0,
-      limit:mangaImagesLength-1
+  useEffect(() => {
+    async function fetchData(){
+
+      // 初回だけ実行される処理
+      const params = {
+        user_id: selectedUser,
+        page: 0,
+        limit: mangaImagesLength - 1
+      };
+      var [comments, books] = await Promise.all([
+        getComments(bookId, params),
+        getBooks(bookId),
+      ]);
+      setComments(comments);
+      setMangaImage(books.images);
     }
-    const comments = await getComments(bookId,params);
-    setComments(comments);
-    //console.log(comments);
-    const books = await getBooks(bookId);
-    setMangaImage(books.images);
-    //console.log(mangaImage);
+    fetchData();
   }, [selectedUser]);
 
   const handleLongPress = (event) => {
@@ -98,10 +102,26 @@ function Viewer() {
     setComments(comments);
     setShow(false);
   }
+
+  // Commentコンポーネントでデータに変更（いいね！）あったとき反映する
+  const onLikeChanged = (comment_id, is_liked, like_cnt) => {
+    setComments(comments.map( comment => {
+      if ( comment.id === comment_id ){
+        comment.is_liked = is_liked;
+        comment.like_cnt = like_cnt;
+      }
+      return comment;
+    }));
+  }
   
   const commentList = comments.map((comment, key) => {
     if(comment.page != pageNumber) return;
-    return <Comment key={key} commentData={comment} />;
+    return <Comment 
+      key={key} 
+      user_id={selectedUser}
+      book_id={bookId} 
+      commentData={comment}
+      callback={onLikeChanged} />;
   });
 
   return (
