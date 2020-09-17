@@ -10,6 +10,7 @@ import heart from '../images/comic/heart.svg';
 import heartFill from '../images/comic/heart-fill.svg';
 
 import put_good from '../api/putGood';
+import delete_good from '../api/deleteGood';
 
 function Comment(props) {
   const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
@@ -56,29 +57,29 @@ function Comment(props) {
   }
 
   const onLikeClicked = async () => {
-    //TODO call API
+    const current_liked = isLiked;
     const before_cnt = like_cnt;
-    if ( isLiked ){
-      setIsLiked(false);
-    } else {
-      // animate like icon for 0.2 sec
-      setIsLiked(true);
+    const after_cnt = before_cnt + (current_liked ? -1 : 1);
+    setIsLiked(!current_liked);
+    setLikeCnt(after_cnt);
+    if ( !current_liked ){
+      // animation for 0.2 sec
       setLikeAnimated(true);
       setTimeout(() => {
         setLikeAnimated(false);
       }, 200);
-      setLikeCnt(before_cnt + 1);
-      var res = await put_good(props.book_id, id, props.user_id);
-      if ( res.status === 204 ){
-        // success
-        console.log('success to put like!', res.url);
-        props.callback(id, true, before_cnt + 1);
-      } else {
-        // failure
-        console.log('fail')
-        setIsLiked(false);
-        setLikeCnt(before_cnt);
-      }
+    }
+    var res = (current_liked ? 
+      await delete_good(props.book_id, id, props.user_id) :
+      await put_good(props.book_id, id, props.user_id)
+    );
+    if ( res.status === 204 ){
+      console.log('success to put/delete like', res);
+      props.callback(id, !current_liked, after_cnt);
+    } else {
+      console.log('fail to put/delete like', res);
+      setIsLiked(current_liked);
+      setLikeCnt(before_cnt);
     }
   }
 
