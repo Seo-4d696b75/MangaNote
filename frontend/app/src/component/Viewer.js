@@ -44,10 +44,10 @@ function Viewer() {
       const params = {
         user_id: selectedUser,
         page: 0,
-        limit: mangaImagesLength - 1
+        limit: mangaImagesLength
       };
-      const comments = await getComments(bookId, params);
-      setComments(comments);
+      const list = await getComments(bookId, params);
+      setComments(list);
     }
     fetchComments();
   }, [selectedUser]);
@@ -86,6 +86,7 @@ function Viewer() {
   }
   
   const userChange = (user_id) =>{
+    console.log(`user changed ${selectedUser} > ${parseInt(user_id)}`);
     setSelectedUser(+user_id);
   }
 
@@ -117,10 +118,10 @@ function Viewer() {
     }));
   }
   
-  const commentList = comments.map((comment, key) => {
+  const commentList = comments.map( comment => {
     if(comment.page != pageNumber) return;
     return <Comment 
-      key={key} 
+      key={comment.id} 
       user_id={selectedUser}
       book_id={bookId} 
       commentData={comment}

@@ -12,10 +12,11 @@ import put_good from '../api/putGood';
 import delete_good from '../api/deleteGood';
 
 function Comment(props) {
-  const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
-  const [isLiked, setIsLiked] = useState(props.commentData.is_liked);
-  const [like_cnt, setLikeCnt] = useState(props.commentData.like_cnt);
+  const {id, type, title, text, longitude, latitude, x, y, is_liked, like_cnt} = props.commentData;
   const [like_animated, setLikeAnimated] = useState(false);
+
+  // like_cnt, is_liked などは 親コンポーネントがすべて保持する
+
   const max_font_size = 3;
   const min_font_size = 1;
   const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
@@ -56,11 +57,11 @@ function Comment(props) {
   }
 
   const onLikeClicked = async () => {
-    const current_liked = isLiked;
+    const current_liked = is_liked;
     const before_cnt = like_cnt;
     const after_cnt = before_cnt + (current_liked ? -1 : 1);
-    setIsLiked(!current_liked);
-    setLikeCnt(after_cnt);
+   
+    props.callback(id, !current_liked, after_cnt);
     if ( !current_liked ){
       // animation for 0.2 sec
       setLikeAnimated(true);
@@ -74,11 +75,9 @@ function Comment(props) {
     );
     if ( res.status === 204 ){
       console.log('success to put/delete like', res);
-      props.callback(id, !current_liked, after_cnt);
     } else {
       console.log('fail to put/delete like', res);
-      setIsLiked(current_liked);
-      setLikeCnt(before_cnt);
+      props.callback(id, current_liked, before_cnt);
     }
   }
 
@@ -114,12 +113,12 @@ function Comment(props) {
               <div className='comment__footer'>
                 <img
                   className={`comment-like-icon ${like_animated ? 'animated' : ''}`}
-                  src={isLiked ? heartFill : heart}
+                  src={is_liked ? heartFill : heart}
                   onClick={onLikeClicked}
                 />
                 <div 
                   className='comment-like-cnt'
-                  style={{color: isLiked ? 'red':'black'}}>
+                  style={{color: is_liked ? 'red':'black'}}>
                   {like_cnt}
                 </div>
                 <TwitterShareButton 
