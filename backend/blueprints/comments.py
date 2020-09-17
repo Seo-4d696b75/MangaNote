@@ -21,6 +21,10 @@ def get_comments(book_id):
     page = 0 if page is None else int(page)
     limit = 10000 if limit is None else max(1,int(limit))
     try:
+        # check existance of the book
+        if db.session.query(func.count(Book.id)).filter(Book.id == book_id).scalar() == 0:
+            return jsonify({'message':'no book found'}), 404
+
         comments = db.session.query(Comment)\
             .filter(
                 Comment.book_id == book_id,
