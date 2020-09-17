@@ -12,7 +12,7 @@ import postComment from "../api/postComment";
 
 import convertToRelativePosition from '../logic/convertToRelativePosition';
 import useLongPress from '../logic/useLongPress';
-import "./Viewer.css";
+import "../styles/sass/component/Viewer.scss";
 
 
 function Viewer() {
@@ -125,7 +125,6 @@ function Viewer() {
   });
 
   return (
-    <div>
       <Container id="mangaContainer">
         <div style={{position: "relative"}}>
           <Image
@@ -156,7 +155,6 @@ function Viewer() {
           appendComment={appendComment}
         ></CommentModal>
       </Container>
-    </div>
   );
 }
 
