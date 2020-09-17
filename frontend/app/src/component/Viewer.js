@@ -24,12 +24,10 @@ function Viewer() {
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
   const bookId = 1;
-
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
   }
-  
   const mangaImagesLength = 10;
 
   useEffect(() => {
@@ -138,10 +136,13 @@ function Viewer() {
             : null
           }
           {isMenuAppear
-            ? <Menu
+            ? 
+              <Menu
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                isCommentAppear = {isCommentAppear}
+                isMenuAppear = {isMenuAppear}
                 users = {users}
               />
             : null
