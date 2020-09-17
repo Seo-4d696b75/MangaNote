@@ -131,7 +131,10 @@ function Comment(props) {
             </div>
           </Popover>
         )}>
-        <p onClick={handleClick} style={style}>
+        <p 
+          className={`comment-icon ${props.animation}`} 
+          onClick={handleClick} 
+          style={style}>
           {icon}
         </p>
       </OverlayTrigger>
