@@ -1,4 +1,5 @@
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
+import Spinner from "react-bootstrap/Spinner";
 import React from "react";
 import './Comment.css';
 
@@ -16,7 +17,6 @@ export class MapContainer extends React.Component {
 		};
 		return (
 			<div className='Map-container'>
-
 				<Map className="Map"
 					google={this.props.google}
 					zoom={14}
@@ -42,7 +42,11 @@ export class MapContainer extends React.Component {
 
 
 const LoadingContainer = (props) => (
-	<div className='Map-container'>Map is loading...</div>
+  <div className="Map-container">
+    <Spinner animation="border" role="status">
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  </div>
 );
 
 export default GoogleApiWrapper({

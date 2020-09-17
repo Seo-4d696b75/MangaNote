@@ -23,7 +23,7 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
-  const bookId = 1;
+  const bookId = 3;
 
   const users = [];
   for (let i = 1;i < 10;i++){
