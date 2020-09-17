@@ -88,10 +88,10 @@ function Viewer() {
   }
 
   const appendComment = (commentData) => {
-    const {type, text} = commentData;
+    const {type, text, title, longitude, latitude} = commentData;
     console.log(text);
     let newComment = comments.pop();
-    newComment = {...newComment, type, text};
+    newComment = {...newComment, type, text, title, longitude, latitude};
     setComments([...comments, newComment]);
     postComment(bookId, newComment);
     setShow(false);

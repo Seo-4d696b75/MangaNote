@@ -7,18 +7,29 @@ import Tab from 'react-bootstrap/Tab';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 function CommentModal({show, handleClose, appendComment}) {
-  const [type, setType] = useState(1);
   const [text, setText] = useState("");
+  const [activeTab, setActiveTab] = useState('comment');
 
   const handleClick = () => {
-    appendComment({type, text});
+    let type;
+    if(activeTab === 'comment') {
+      const isSpoiler = document.getElementById('isSpoiler').checked;
+      type = isSpoiler ? 3 : 1;
+      appendComment({type, text});
+    } else {
+      type = 2;
+      const title = "ダミー病院"
+      const longitude = 0;
+      const latitude = 0;
+      appendComment({type, title, longitude, latitude});
+    }
   }
 
   return (
     <div>
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body>
-          <Tabs>
+          <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)}>
             <Tab eventKey="comment" title="コメント">
               <Form.Group>
                 <Form.Control
@@ -29,7 +40,7 @@ function CommentModal({show, handleClose, appendComment}) {
                 />
                 <InputGroup className="mb-3">
                   <InputGroup.Prepend>
-                    <InputGroup.Checkbox />
+                    <InputGroup.Checkbox id="isSpoiler" />
                   </InputGroup.Prepend>
                   <span>ネタバレコメントに設定する</span>
                 </InputGroup>
