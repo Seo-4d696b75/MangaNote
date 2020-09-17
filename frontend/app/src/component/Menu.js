@@ -1,17 +1,15 @@
-import React, {useState} from "react";
+import React from "react";
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import DropdownItem from 'react-bootstrap/DropdownItem';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
 
 function Menu(props) {
     
     const style = {
-        color: "red",
         position: "absolute",
-        top: `95%`,
-        left: `30%`,
+        top: `85%`,
+        left: `75%`,
+        
     };
     
     const handleCommentChange = () =>{
@@ -34,12 +32,17 @@ function Menu(props) {
     )
 
     return(
-        
-        <ButtonGroup
-        style = {style}
-        >
-        <Button variant="secondary" onClick={handleCommentChange}>
-        コメント表示切り替え
+        <div style = {style}>
+
+        <Button 
+        variant="light" 
+        onClick={handleCommentChange}　
+        style = {{width:"5rem",height:"5rem"}}
+        className ="rounded-circle p-0">
+        {props.isCommentAppear
+        ? <>💬<p style={{fontsize:"1rem"}}>非表示</p></>
+        : <>💬<p style={{fontsize:"1rem"}}>表示</p></>
+        }
         </Button>
 
         <DropdownButton
@@ -47,11 +50,12 @@ function Menu(props) {
           title={props.selectedUser}
           variant="secondary"
           onSelect = {(eventKey) => handleUserChange(eventKey)}
+          
         >
         {userDropdown}
         </DropdownButton>
         
-        </ButtonGroup>
+        </div>
     )
 }
 

@@ -25,31 +25,31 @@ function Viewer() {
   const [show, setShow] = useState(false);
   const [animatedCommentID, setAnimatedCommentID] = useState(undefined);
   const bookId = 1;
-
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
   }
-  
   const mangaImagesLength = 10;
 
   useEffect(() => {
-    async function fetchData(){
+    async function fetchBooks() {
+      const books = await getBooks(bookId);
+      setMangaImage(books.images);
+    }
+    fetchBooks();
+  }, []);
 
-      // 初回だけ実行される処理
+  useEffect(() => {
+    async function fetchComments(){
       const params = {
         user_id: selectedUser,
         page: 0,
         limit: mangaImagesLength - 1
       };
-      var [comments, books] = await Promise.all([
-        getComments(bookId, params),
-        getBooks(bookId),
-      ]);
+      const comments = await getComments(bookId, params);
       setComments(comments);
-      setMangaImage(books.images);
     }
-    fetchData();
+    fetchComments();
   }, [selectedUser]);
 
   const handleLongPress = (event) => {
@@ -141,10 +141,13 @@ function Viewer() {
             : null
           }
           {isMenuAppear
-            ? <Menu
+            ? 
+              <Menu
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
+                isCommentAppear = {isCommentAppear}
+                isMenuAppear = {isMenuAppear}
                 users = {users}
               />
             : null

@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 function CommentModal({show, handleClose, appendComment}) {
   const [type, setType] = useState(1);
@@ -14,33 +17,34 @@ function CommentModal({show, handleClose, appendComment}) {
   return (
     <div>
       <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>コメントを追加</Modal.Title>
-        </Modal.Header>
         <Modal.Body>
-          <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Label>タグ</Form.Label>
-            <Form.Control
-              as="select"
-              onChange={event => {setType(parseInt(event.target.value))}}
-            >
-              <option value="1">💬　コメント</option>
-              <option value="3">🤐　ネタバレ</option>
-              <option value="2">📍　聖地</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>本文</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows="3"
-              onChange={event => {setText(event.target.value)}}
-            />
-          </Form.Group>
+          <Tabs>
+            <Tab eventKey="comment" title="コメント">
+              <Form.Group>
+                <Form.Control
+                  placeholder="コメントを入力してください"
+                  as="textarea"
+                  rows="3"
+                  onChange={event => {setText(event.target.value)}}
+                />
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                    <InputGroup.Checkbox />
+                  </InputGroup.Prepend>
+                  <span>ネタバレコメントに設定する</span>
+                </InputGroup>
+              </Form.Group>
+            </Tab>
+            <Tab eventKey="map" title="聖地">
+            </Tab>
+          </Tabs>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            キャンセル
+          </Button>
           <Button variant="primary" onClick={handleClick}>
-            追加
+            投稿
           </Button>
         </Modal.Footer>
       </Modal>
