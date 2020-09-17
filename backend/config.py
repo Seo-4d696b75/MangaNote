@@ -13,5 +13,10 @@ class DevelopmentConfig:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+class TestConfig:
+
+  SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+  SQLALCHEMY_TRACK_MODIFICATIONS = False
+  SQLALCHEMY_ECHO = False
 
 Config = DevelopmentConfig
