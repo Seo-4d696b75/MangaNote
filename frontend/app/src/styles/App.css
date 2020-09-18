@@ -1,5 +1,13 @@
 .App {
     width: 100vw;
     height: 100vh;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     background-color: #4F4F4F;
+}
+
+img {
+    -webkit-user-drag: none;
 }

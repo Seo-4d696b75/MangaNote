@@ -71,16 +71,18 @@ function Menu(props) {
           )}
       </Button>
 
-      <DropdownButton
-        key="down"
-        title={props.selectedUser}
-        variant="secondary"
-        onSelect={(eventKey) => handleUserChange(eventKey)}
-      >
-        {userDropdown}
-      </DropdownButton>
-    </div>
-  );
+        {/* 開発用 */}
+        <DropdownButton
+          key="down"
+          title={props.selectedUser}
+          variant="secondary"
+          onSelect={(eventKey) => handleUserChange(eventKey)}
+          style={{display: "none"}}
+        >
+          {userDropdown}
+        </DropdownButton>
+      </div>
+    );
 }
 
 export default Menu;
