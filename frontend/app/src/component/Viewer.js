@@ -108,7 +108,9 @@ function Viewer() {
     const comment_id = res.comment_id;
     if ( comment_id ){
       newComment.id = comment_id;
-      newComment.animation = 'appeal'
+      newComment.animation = 'appeal';
+      newComment.like_cnt = 0;
+      newComment.is_liked = false;
       console.log('success to post a comment', newComment);
       comments.pop();
       setComments([...comments, newComment]);
