@@ -114,10 +114,24 @@ function Comment(props) {
                 </div>
                 <p className="place__text">{text}</p>
                 <div className="place__footer">
+                  <div className="like">
+                    <img
+                      className={`like__icon${
+                        like_animated ? "--animated" : ""
+                      } ${like_animated ? "animated" : ""}`}
+                      src={is_liked ? heartFill : heart}
+                      onClick={onLikeClicked}
+                    />
+                    <div className={`like__cnt${is_liked ? "--islinked" : ""}`}>
+                      {like_cnt}
+                    </div>
+                  </div>
                   <TwitterShareButton
                     className=""
-                    url={"https://url-to-image/or/page-has-thumbnail"}
-                    title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}
+                    url={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(
+                      5
+                    )},${longitude.toFixed(5)}`}
+                    title={`マンガNoteより\n聖地スポットにいいね！しました\n「${title}」`}
                   >
                     <TwitterIcon
                       size="36"
@@ -138,18 +152,18 @@ function Comment(props) {
                     <img
                       className={`like__icon${
                         like_animated ? "--animated" : ""
-                      } ${like_animated ? "animated" : ""}`}
-                      src={isLiked ? heartFill : heart}
+                      }`}
+                      src={is_liked ? heartFill : heart}
                       onClick={onLikeClicked}
                     />
-                    <div className={`like__cnt${isLiked ? "--islinked" : ""}`}>
+                    <div className={`like__cnt${is_liked ? "--islinked" : ""}`}>
                       {like_cnt}
                     </div>
                   </div>
                   <TwitterShareButton
                     className=""
                     url={"https://url-to-image/or/page-has-thumbnail"}
-                    title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}
+                    title={`マンガNoteより\nコメントにいいね！しました\n「${text}」`}
                   >
                     <TwitterIcon
                       size="36"
