@@ -164,7 +164,7 @@ $font-color: dimgrey;
 
   .tab {
     @extend %tab;
-    background-color: $primary-dark-color;
+    background-color: $border-color;
     box-shadow: 2px -2px 2px rgba(0, 0, 0, 0.1) inset;
 
     &:hover {
@@ -184,7 +184,7 @@ $font-color: dimgrey;
 
   .icon {
     @extend %icon;
-    opacity: 0.3;
+    opacity: 0.4;
 
     &--active {
       @extend %icon;
@@ -196,7 +196,7 @@ $font-color: dimgrey;
     font-size: larger;
     font-weight: bold;
     color: black;
-    opacity: 0.3;
+    opacity: 0.4;
 
     &--active {
       font-size: larger;
