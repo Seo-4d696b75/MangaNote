@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import {Modal, Button, Form, Image, InputGroup, ToggleButton, ButtonGroup} from 'react-bootstrap';
 import Map from "./LocationSelect";
 
-import Map from "./LocationSelect";
-
 import "../styles/sass/component/CommentModal.scss";
 import comment_edit_svg from "../images/icon/comment_edit.svg";
 import pin_edit_svg from "../images/icon/pin_edit.svg";
