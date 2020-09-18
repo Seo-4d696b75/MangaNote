@@ -1,9 +1,10 @@
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import Spinner from "react-bootstrap/Spinner";
 import React from "react";
-import "../styles/sass/component/MiniMap.scss";
 
-// import './Comment.css';
+import "../styles/sass/component/MiniMap.scss";
+import "../styles/sass/component/Comment.scss";
+
 
 
 export class MapContainer extends React.Component {
@@ -35,7 +36,7 @@ export class MapContainer extends React.Component {
           <Marker visible={true} position={pos}></Marker>
         </Map>
       </div>
-    );
+		);
 	}
 
 }

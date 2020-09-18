@@ -12,7 +12,7 @@ import postComment from "../api/postComment";
 
 import convertToRelativePosition from '../logic/convertToRelativePosition';
 import useLongPress from '../logic/useLongPress';
-import "./Viewer.css";
+import "../styles/sass/component/Viewer.scss";
 
 
 function Viewer() {
@@ -23,6 +23,7 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
+  const [animatedCommentID, setAnimatedCommentID] = useState(-1);
   const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
@@ -43,10 +44,10 @@ function Viewer() {
       const params = {
         user_id: selectedUser,
         page: 0,
-        limit: mangaImagesLength - 1
+        limit: mangaImagesLength
       };
-      const comments = await getComments(bookId, params);
-      setComments(comments);
+      const list = await getComments(bookId, params);
+      setComments(list);
     }
     fetchComments();
   }, [selectedUser]);
@@ -54,7 +55,14 @@ function Viewer() {
   const handleLongPress = (event) => {
     const {pageX, pageY} = event;
     const [x, y] = convertToRelativePosition(pageX, pageY);
-    const newComment = {user_id: selectedUser, type: 1, page: pageNumber, x, y};
+    const newComment = {
+      user_id: selectedUser, 
+      type: 1, 
+      page: pageNumber, 
+      x, 
+      y,
+      animation: 'blink'
+    };
     setComments([...comments, newComment]);
     setShow(true);
   }
@@ -83,18 +91,32 @@ function Viewer() {
   const menuChange = () => {
     setIsMenuAppear(!(isMenuAppear));
   }
+  
   const userChange = (user_id) =>{
+    console.log(`user changed ${selectedUser} > ${parseInt(user_id)}`);
     setSelectedUser(+user_id);
   }
 
-  const appendComment = (commentData) => {
+  // コメント追加
+  const appendComment = async (commentData) => {
     const {type, text, title, longitude, latitude} = commentData;
-    console.log(text);
-    let newComment = comments.pop();
+    console.log('post a comment', text);
+    setShow(false);    
+    var newComment = comments[comments.length-1];
     newComment = {...newComment, type, text, title, longitude, latitude};
-    setComments([...comments, newComment]);
-    postComment(bookId, newComment);
-    setShow(false);
+    var res = await postComment(bookId, newComment);
+    const comment_id = res.comment_id;
+    if ( comment_id ){
+      newComment.id = comment_id;
+      newComment.animation = 'appeal'
+      console.log('success to post a comment', newComment);
+      comments.pop();
+      setComments([...comments, newComment]);
+      setAnimatedCommentID(comment_id);
+      setTimeout(() => {
+        newComment.animation = undefined;
+      }, 300);
+    }
   }
 
   const handleModalClose = () => {
@@ -114,10 +136,11 @@ function Viewer() {
     }));
   }
   
-  const commentList = comments.map((comment, key) => {
+  const commentList = comments.map( comment => {
     if(comment.page != pageNumber) return;
     return <Comment 
-      key={key} 
+      animation={comment.animation}
+      key={comment.id} 
       user_id={selectedUser}
       book_id={bookId} 
       commentData={comment}
@@ -125,7 +148,6 @@ function Viewer() {
   });
 
   return (
-    <div>
       <Container id="mangaContainer">
         <div style={{position: "relative"}}>
           <Image
@@ -156,7 +178,6 @@ function Viewer() {
           appendComment={appendComment}
         ></CommentModal>
       </Container>
-    </div>
   );
 }
 

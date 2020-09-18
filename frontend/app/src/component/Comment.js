@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import MiniMap from './MiniMap';
 import Popover from 'react-bootstrap/Popover';
 import { TwitterShareButton, TwitterIcon} from 'react-share';
@@ -15,10 +14,11 @@ import "../styles/sass/component/Comment.scss";
 // import './Comment.css';
 
 function Comment(props) {
-  const {id, type, title, text, longitude, latitude, x, y} = props.commentData;
-  const [isLiked, setIsLiked] = useState(props.commentData.is_liked);
-  const [like_cnt, setLikeCnt] = useState(props.commentData.like_cnt);
+  const {id, type, title, text, longitude, latitude, x, y, is_liked, like_cnt} = props.commentData;
   const [like_animated, setLikeAnimated] = useState(false);
+
+  // like_cnt, is_liked などは 親コンポーネントがすべて保持する
+
   const max_font_size = 3;
   const min_font_size = 1;
   const font_size = min_font_size + (max_font_size - min_font_size) * (1.0 - Math.exp(-like_cnt/40.0));
@@ -59,11 +59,11 @@ function Comment(props) {
   }
 
   const onLikeClicked = async () => {
-    const current_liked = isLiked;
+    const current_liked = is_liked;
     const before_cnt = like_cnt;
     const after_cnt = before_cnt + (current_liked ? -1 : 1);
-    setIsLiked(!current_liked);
-    setLikeCnt(after_cnt);
+   
+    props.callback(id, !current_liked, after_cnt);
     if ( !current_liked ){
       // animation for 0.2 sec
       setLikeAnimated(true);
@@ -77,11 +77,9 @@ function Comment(props) {
     );
     if ( res.status === 204 ){
       console.log('success to put/delete like', res);
-      props.callback(id, !current_liked, after_cnt);
     } else {
       console.log('fail to put/delete like', res);
-      setIsLiked(current_liked);
-      setLikeCnt(before_cnt);
+      props.callback(id, current_liked, before_cnt);
     }
   }
 
@@ -166,7 +164,10 @@ function Comment(props) {
           )
         }
       >
-        <p onClick={handleClick} style={style}>
+        <p 
+          className={`comment-icon ${props.animation}`} 
+          onClick={handleClick} 
+          style={style}>
           {icon}
         </p>
       </OverlayTrigger>
