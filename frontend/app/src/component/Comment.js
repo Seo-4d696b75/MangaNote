@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import "../styles/sass/component/Comment.scss";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import MiniMap from './MiniMap';
 import Popover from 'react-bootstrap/Popover';
@@ -10,6 +9,9 @@ import heartFill from '../images/comic/heart-fill.svg';
 
 import put_good from '../api/putGood';
 import delete_good from '../api/deleteGood';
+
+import "../styles/sass/component/Comment.scss";
+// import './Comment.css';
 
 function Comment(props) {
   const {id, type, title, text, longitude, latitude, x, y, is_liked, like_cnt} = props.commentData;
@@ -87,51 +89,81 @@ function Comment(props) {
       <OverlayTrigger
         trigger="click"
         placement={placement}
-
-        overlay={ type === 2 ? (
-          <Popover className='map-popover'>
-            <Popover.Title as='h3'>
-              <a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(5)},${longitude.toFixed(5)}`}>
-                {title}
-              </a>
-            </Popover.Title>
-            <Popover.Content>
-              <div className='place-content'>
-                <MiniMap lat={latitude} lng={longitude}></MiniMap>
-                <div className='place-comment-container'>
-                  <div className='place-coordinate'>
-                    {`座標：${latitude>0 ? 'N':'S'}${Math.abs(latitude).toFixed(4)} ${longitude>0 ? 'E':'W'}${Math.abs(longitude).toFixed(4)}`}
-                  </div>
+        overlay={
+          type === 2 ? (
+            <Popover className="place">
+              <Popover.Content className="place__container">
+                <a
+                  target="_blank"
+                  href={`https://www.google.com/maps/search/?api=1&query=${latitude.toFixed(
+                    5
+                  )},${longitude.toFixed(5)}`}
+                  className="place__title"
+                >
+                  <span>{title}</span>
+                </a>
+                <div className="place__map">
+                  <MiniMap lat={latitude} lng={longitude}></MiniMap>
                 </div>
-              </div>
+                <div className="place__coordinate">
+                  {`座標：${latitude > 0 ? "N" : "S"}${Math.abs(
+                    latitude
+                  ).toFixed(4)} ${longitude > 0 ? "E" : "W"}${Math.abs(
+                    longitude
+                  ).toFixed(4)}`}
+                </div>
+                <p className="place__text">{text}</p>
+                <div className="place__footer">
+                  <TwitterShareButton
+                    className=""
+                    url={"https://url-to-image/or/page-has-thumbnail"}
+                    title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}
+                  >
+                    <TwitterIcon
+                      size="36"
+                      round={true}
+                      bgStyle={{ fill: "transparent" }}
+                      iconFillColor="#1DA1F2"
+                    />
+                  </TwitterShareButton>
+                </div>
               </Popover.Content>
             </Popover>
           ) : (
-          <Popover className='comment'>
-            <Popover.Content className='comment__container'>
-              <p className='comment__text'>{text}</p>
-              <div className='comment__footer'>
-                <img
-                  className={`comment-like-icon ${like_animated ? 'animated' : ''}`}
-                  src={is_liked ? heartFill : heart}
-                  onClick={onLikeClicked}
-                />
-                <div 
-                  className='comment-like-cnt'
-                  style={{color: is_liked ? 'red':'black'}}>
-                  {like_cnt}
+            <Popover className="comment">
+              <Popover.Content>
+                <p className="comment__text">{text}</p>
+                <div className="comment__footer">
+                  <div className="like">
+                    <img
+                      className={`like__icon${
+                        like_animated ? "--animated" : ""
+                      } ${like_animated ? "animated" : ""}`}
+                      src={isLiked ? heartFill : heart}
+                      onClick={onLikeClicked}
+                    />
+                    <div className={`like__cnt${isLiked ? "--islinked" : ""}`}>
+                      {like_cnt}
+                    </div>
+                  </div>
+                  <TwitterShareButton
+                    className=""
+                    url={"https://url-to-image/or/page-has-thumbnail"}
+                    title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}
+                  >
+                    <TwitterIcon
+                      size="36"
+                      round={true}
+                      bgStyle={{ fill: "transparent" }}
+                      iconFillColor="#1DA1F2"
+                    />
+                  </TwitterShareButton>
                 </div>
-                <TwitterShareButton 
-                  className='comment-sns-button'
-                  url={'https://url-to-image/or/page-has-thumbnail'} 
-                  title={`MangaNoteより\nコメントにいいね！しました\n「${text}」`}>
-                  <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>
-                </TwitterShareButton>
-              </div>
-              
               </Popover.Content>
-          </Popover>
-        )}>
+            </Popover>
+          )
+        }
+      >
         <p 
           className={`comment-icon ${props.animation}`} 
           onClick={handleClick} 

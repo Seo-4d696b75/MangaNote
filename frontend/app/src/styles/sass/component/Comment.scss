@@ -1,59 +1,70 @@
-.map-popover{
-  width: 360px;
-  height: auto;
+%footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
-
-.place-content{
-  width: auto;
-  height: auto;
-}
-
-.map-container{
-  width: 100%;
-  height: 240px;
-  position: relative;
-}
-
-.place-comment-container{
-  padding: 5px;
-  width: 100%;
-  height: auto;
-}
-
-.place-coordinate{
-  font-size: x-small;
-}
-
 
 
 .comment {
   border:0 !important;
   filter: drop-shadow(rgba(0, 0, 0, 0.4) 0 2px 3px);
+  min-width: 140px;
 
   &__container{
-    min-height: 30px;
     padding: 8px;
+    min-height: 30px;
+  }
+
+  &__coordinate{
+    font-size: x-small;
   }
 
   &__text{
     margin: 0;
   }
 
-  &__footer{
-    height: 26px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    img {
-      margin: 0;
-      width: 22px;
-      height: 22px;
-    }
+  &__footer {
+    @extend %footer;
   }
 }
 
+.like {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 
+  %__icon {
+    margin: 0;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+  }
+
+  &__icon {
+    @extend %__icon;
+
+    &--animated {
+      @extend %__icon;
+      animation: heartAnimation .2s;
+    }
+  }
+
+  %__cnt {
+    font-size: small;
+    margin: 0 0 0 2px;
+  }
+
+  &__cnt {
+    @extend %__cnt;
+    color: black;
+
+    &--islinked {
+      @extend %__cnt;
+      color: red;
+    }
+  }
+
+}
 
 /* Retrieved from https://yuyauver98.me/twitter-like-animation/ */
 @keyframes heartAnimation {
@@ -76,6 +87,44 @@
   100% {
     /* もとのサイズに戻す */
     transform: scale(1.0);
+  }
+}
+
+
+.place {
+  @extend .comment;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: large;
+    color: dimgray;
+    text-decoration: none;
+
+    &:hover {
+      color: mediumturquoise;
+      text-decoration: underline dashed;
+    }
+  }
+
+  &__map {
+    position: relative;
+  }
+
+  &__coordinate {
+    font-size: x-small;
+  }
+  &__text {
+    margin: 8px 0 0 0;
+  }
+
+  &__footer {
+    @extend %footer;
   }
 }
 
@@ -142,3 +191,4 @@
   animation: appealAnimation .5s;
   animation-timing-function: ease;
 }
+
