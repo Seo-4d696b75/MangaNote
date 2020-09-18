@@ -1,0 +1,81 @@
+$primary-color: mediumseagreen;
+$primary-dark-color: darkseagreen;
+$primary-darkness-color: seagreen;
+$border-color: lightgrey;
+$disable-color: dimgrey;
+$base-color: white;
+$font-color: dimgrey;
+
+%comment-menu {
+  width: 6rem;
+  height: 6rem;
+  filter: drop-shadow(rgba(0, 0, 0, 0.4) 0 2px 3px);
+}
+
+#menu.comment-menu {
+  @extend %comment-menu;
+  background-color: $base-color;
+  border-color: $border-color;
+  border-width: medium;
+
+  &:hover {
+    background-color: $border-color;
+    border: 0;
+    transition: 0.3s;
+  }
+
+  &--appear {
+    @extend %comment-menu;
+    background-color: $base-color;
+    border-color: $primary-color;
+    border-width: medium;
+
+
+    &:hover {
+      background-color: $primary-color;
+      border: 0;
+      transition: 0.3s;
+    }
+  }
+}
+
+.comment-menu {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    
+  }
+
+  &__icon {
+    width: 3rem;
+    height: 3rem;
+    z-index: -1;
+    background-image: url(../../../images/icon/comment_toggle.svg);
+    
+
+    &--appear {
+      width: 3rem;
+      height: 3rem;
+      z-index: 1;
+      border-color: $primary-color;
+      border-width: thick;
+
+    }
+  }
+
+  &__line {
+    stroke-width: 2;
+  }
+
+  &__text {
+    
+  } 
+
+  &--appear {
+    @extend %comment-menu;
+
+  }
+}

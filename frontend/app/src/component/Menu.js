@@ -3,6 +3,11 @@ import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 
+import "../styles/sass/component/Menu.scss";
+import comment_toggle_svg from "../images/icon/comment_toggle.svg";
+import comment_toggle_off_svg from "../images/icon/comment_toggle_off.svg";
+
+
 function Menu(props) {
     
     const style = {
@@ -31,32 +36,53 @@ function Menu(props) {
         }
     )
 
-    return(
-        <div style = {style}>
-
-        <Button 
-        variant="light" 
-        onClick={handleCommentChange}　
-        style = {{width:"5rem",height:"5rem"}}
-        className ="rounded-circle p-0">
-        {props.isCommentAppear
-        ? <>💬<p style={{fontsize:"1rem"}}>非表示</p></>
-        : <>💬<p style={{fontsize:"1rem"}}>表示</p></>
-        }
+    return (
+      <div style={style}>
+        <Button
+          variant={`outline-${
+            props.isCommentAppear ? "success" : "secondary"
+          }`}
+          onClick={handleCommentChange}
+          id="menu"
+          className={`rounded-circle p-0 comment-menu${
+            props.isCommentAppear ? "--appear" : ""
+          }`}
+        >
+          {props.isCommentAppear ? (
+            <div className="comment-menu__container">
+              <img
+                src={comment_toggle_svg}
+                className="comment-menu__icon--appear"
+              ></img>
+              <span className="comment-menu__text">表示</span>
+            </div>
+          ) : (
+            <div className="comment-menu__container">
+              <svg className="comment-menu__icon">
+                <line
+                  x1="5"
+                  y1="5"
+                  x2="44"
+                  y2="44"
+                  stroke="#000"
+                  className="comment-menu__line"
+                ></line>
+              </svg>
+              <span className="comment-menu__text">非表示</span>
+            </div>
+          )}
         </Button>
 
         <DropdownButton
           key="down"
           title={props.selectedUser}
           variant="secondary"
-          onSelect = {(eventKey) => handleUserChange(eventKey)}
-          
+          onSelect={(eventKey) => handleUserChange(eventKey)}
         >
-        {userDropdown}
+          {userDropdown}
         </DropdownButton>
-        
-        </div>
-    )
+      </div>
+    );
 }
 
 export default Menu;
