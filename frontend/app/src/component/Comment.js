@@ -139,10 +139,10 @@ function Comment(props) {
                       className={`like__icon${
                         like_animated ? "--animated" : ""
                       } ${like_animated ? "animated" : ""}`}
-                      src={isLiked ? heartFill : heart}
+                      src={is_liked ? heartFill : heart}
                       onClick={onLikeClicked}
                     />
-                    <div className={`like__cnt${isLiked ? "--islinked" : ""}`}>
+                    <div className={`like__cnt${is_liked ? "--islinked" : ""}`}>
                       {like_cnt}
                     </div>
                   </div>
