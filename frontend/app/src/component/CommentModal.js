@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-
 import {Modal, Button, Form, Image, InputGroup, ToggleButton, ButtonGroup} from 'react-bootstrap';
+import Map from "./LocationSelect";
 
 import "../styles/sass/component/CommentModal.scss";
 import comment_edit_svg from "../images/icon/comment_edit.svg";
@@ -42,7 +42,7 @@ function CommentModal({show, handleClose, appendComment}) {
             <span className="title--active">コメント</span>
           </Button>
           <Button className="tab">
-            <Image src={pin_edit_svg} roundedCircle className="icon"/>
+            <Image src={pin_edit_svg} roundedCircle className="icon" />
             <span className="title">聖 地</span>
           </Button>
         </div>
@@ -118,7 +118,7 @@ function CommentModal({show, handleClose, appendComment}) {
             variant="primary"
             disabled={!text.length}
             onClick={handleClick}
-            className="btn-post"
+            className={`btn-post${!text.length ? "" : "--active"}`}
           >
             投 稿
           </Button>

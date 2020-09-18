@@ -5,8 +5,6 @@ import DropdownItem from 'react-bootstrap/DropdownItem';
 
 import "../styles/sass/component/Menu.scss";
 import comment_toggle_svg from "../images/icon/comment_toggle.svg";
-import comment_toggle_off_svg from "../images/icon/comment_toggle_off.svg";
-
 
 function Menu(props) {
     
@@ -50,14 +48,6 @@ function Menu(props) {
         >
           {props.isCommentAppear ? (
             <div className="comment-menu__container">
-              <img
-                src={comment_toggle_svg}
-                className="comment-menu__icon--appear"
-              ></img>
-              <span className="comment-menu__text">表示</span>
-            </div>
-          ) : (
-            <div className="comment-menu__container">
               <svg className="comment-menu__icon">
                 <line
                   x1="5"
@@ -69,6 +59,15 @@ function Menu(props) {
                 ></line>
               </svg>
               <span className="comment-menu__text">非表示</span>
+            </div>
+            
+          ) : (
+            <div className="comment-menu__container">
+              <img
+                src={comment_toggle_svg}
+                className="comment-menu__icon--appear"
+              ></img>
+              <span className="comment-menu__text">表 示</span>
             </div>
           )}
         </Button>
