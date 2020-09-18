@@ -16,7 +16,9 @@ function CommentList(props) {
     async function fetchCommentList() {
       const userId = props.userId;
       const commentLists = await getdefault(`users/${userId}/comments`);
-      setCommentList(commentLists[props.bookId]);
+      if(props.bookId in commentLists) {
+        setCommentList(commentLists[props.bookId]);
+      }
     }
     fetchCommentList();
   }, [props.userId]);
