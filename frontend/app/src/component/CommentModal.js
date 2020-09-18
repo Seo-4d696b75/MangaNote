@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import {Modal, Button, Form, Image, InputGroup, ToggleButton, ButtonGroup} from 'react-bootstrap';
 import Map from "./LocationSelect";
 
-import Map from "./LocationSelect";
-
 import "../styles/sass/component/CommentModal.scss";
 import comment_edit_svg from "../images/icon/comment_edit.svg";
 import pin_edit_svg from "../images/icon/pin_edit.svg";
@@ -31,7 +29,8 @@ function CommentModal({show, handleClose, appendComment}) {
   }
 
   const commentTab = (
-    <Form.Group>
+    <Form.Group id="edit-comment">
+      <span>コメント</span>
       <Form.Control
         placeholder="コメントを入力してください"
         as="textarea"
@@ -64,26 +63,43 @@ function CommentModal({show, handleClose, appendComment}) {
   );
 
   const mapTab = (
-    <div eventKey="map" title="聖地">
-      <div className='map-selector-location'>
-        スポットを選択してください：{location.lat>0 ? 'N':'S'}{Math.abs(location.lat).toFixed(4)}{location.lng>0 ? 'E':'W'}{Math.abs(location.lng).toFixed(4)}
+    <div eventKey="map" title="聖地" id="edit-map">
+      <div className="head-flex">
+        <div>スポット選択</div>
+        <div className="location">
+          {location.lat > 0 ? "N" : "S"}
+          {Math.abs(location.lat).toFixed(4)}
+          {location.lng > 0 ? "E" : "W"}
+          {Math.abs(location.lng).toFixed(4)}
+        </div>
       </div>
-        <Map 
-          callback={pos => {setLocation(pos)}}
-          init_location={location}></Map>
+      <Map
+        callback={(pos) => {
+          setLocation(pos);
+        }}
+        init_location={location}
+      ></Map>
+      <div className="head-text">タイトル</div>
       <Form.Control
         placeholder="タイトルを入力してください"
         as="textarea"
         rows="1"
-        onChange={event => {setTitle(event.target.value)}}
+        onChange={(event) => {
+          setTitle(event.target.value);
+        }}
+        className="title-area"
       />
+      <div className="head-text">コメント</div>
       <Form.Control
         placeholder="聖地の説明を入力してください"
         as="textarea"
         rows="3"
-        onChange={event => {setText(event.target.value)}}
+        onChange={(event) => {
+          setText(event.target.value);
+        }}
+        className="comment-area"
       />
-    </div> 
+    </div>
   );
 
 
@@ -92,29 +108,29 @@ function CommentModal({show, handleClose, appendComment}) {
       <Modal show={show} onHide={handleClose} centered id="edit">
         <div id="tabs">
           <Button
-            className={`tab${activeTab === 'comment' ? '--active' : ''}`}
-            onClick={()  =>  setActiveTab('comment')}
+            className={`tab${activeTab === "comment" ? "--active" : ""}`}
+            onClick={() => setActiveTab("comment")}
           >
             <Image
               src={comment_edit_svg}
               roundedCircle
-              className={`icon${activeTab === 'comment' ? '--active' : ''}`}
+              className={`icon${activeTab === "comment" ? "--active" : ""}`}
             />
             <span className="title--active">コメント</span>
           </Button>
           <Button
-            className={`tab${activeTab === 'map' ? '--active' : ''}`}
-            onClick={()  =>  setActiveTab('map')}
+            className={`tab${activeTab === "map" ? "--active" : ""}`}
+            onClick={() => setActiveTab("map")}
           >
             <Image
               src={pin_edit_svg}
               roundedCircle
-              className={`icon${activeTab === 'map' ? '--active' : ''}`}
+              className={`icon${activeTab === "map" ? "--active" : ""}`}
             />
             <span className="title">聖 地</span>
           </Button>
         </div>
-        <Modal.Body className="body">
+        <Modal.Body id={`edit-${activeTab === "comment" ? "comment" : "place"}`} className="body">
           {activeTab === "comment" ? commentTab : mapTab}
         </Modal.Body>
         <Modal.Footer className="footer">

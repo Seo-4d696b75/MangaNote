@@ -1,40 +1,48 @@
-$primary-color: mediumseagreen;
-$primary-dark-color: darkseagreen;
+$primary-color: mediumaquamarine;
+$primary-light-color:	#CBECE1;
+$primary-dark-color: #2CB486;
 $primary-darkness-color: seagreen;
 $border-color: lightgrey;
-$disable-color: dimgrey;
+$disable-color: silver;
 $base-color: white;
 $font-color: dimgrey;
+$accent-color:#F2BD57;
+$accent-light-color: #F9E4BA;
+
+#menu-index {
+  z-index: 300 !important;
+}
 
 %comment-menu {
   width: 6rem;
   height: 6rem;
-  filter: drop-shadow(rgba(0, 0, 0, 0.4) 0 2px 3px);
+  filter: drop-shadow(rgba(0, 0, 0, 0.5) 0 4px 6px);
   transition: 0.3s;
 }
 
 #menu.comment-menu {
   @extend %comment-menu;
-  background-color: $base-color;
-  border-color: $border-color;
+  background-color: $accent-color;
+  border-color: $accent-color;
   border-width: medium;
 
   &:hover {
-    background-color: $border-color;
-    border: 0;
+    background-color: $accent-light-color;
+    border-color: $accent-light-color;
+    border-width: medium;
     transition: 0.3s;
   }
 
   &--appear {
     @extend %comment-menu;
-    background-color: $base-color;
+    background-color: $primary-color;
     border-color: $primary-color;
     border-width: medium;
 
-
     &:hover {
-      background-color: $primary-color;
-      border: 0;
+      background-color: $primary-light-color;
+      border-color: $primary-light-color;
+      border-width: medium;
       transition: 0.3s;
     }
   }

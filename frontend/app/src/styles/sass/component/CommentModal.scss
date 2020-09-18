@@ -1,10 +1,11 @@
-$primary-color: mediumseagreen;
-$primary-dark-color: darkseagreen;
+$primary-color: mediumaquamarine;
+$primary-dark-color: #2CB486;
 $primary-darkness-color: seagreen;
 $border-color: lightgrey;
-$disable-color: dimgrey;
+$disable-color: silver;
 $base-color: white;
 $font-color: dimgrey;
+
 
 *:focus {
   outline: none !important;
@@ -34,29 +35,17 @@ $font-color: dimgrey;
 
   .body {
     background-color: $base-color;
-    padding: 30px 35px 10px 35px;
+    padding: 20px 40px 10px 40px;
+    transition: 0.5s;
+    height: 520px
   }
 
-  .comment-area {
-    height: 40vh;
-    border-width: 2px;
-    color: $font-color;
-
-    &::placeholder {
-      color: $border-color;
-    }
-    
-    &:focus {
-      border-color: $primary-color;
-      transition: 0.3s;
-    }
-  }
   .footer {
     border: thick solid $base-color;
     display: flex;
     background-color: $base-color;
     border-radius: 0 0 20px 20px;
-    padding: 0 25px 30px 25px;
+    padding: 0 30px 20px 30px;
     margin: 0;
   }
 
@@ -77,8 +66,79 @@ $font-color: dimgrey;
         transition: 0.3s;
       }
     }
-
   }
+}
+
+#edit-comment {
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .comment-area {
+    height: 200px;
+    border-width: 2px;
+    color: $font-color;
+
+    &::placeholder {
+      color: $border-color;
+    }
+    
+    &:focus {
+      border-color: $primary-color;
+      transition: 0.3s;
+    }
+  }
+}
+
+#edit-map {
+  .head-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .head-text {
+    margin-top: 10px;
+  }
+
+  .location {
+    padding: 4px;
+    font-size: x-small;
+  }
+
+  .comment-area {
+    height: 100px;
+    border-width: 2px;
+    color: $font-color;
+    padding-bottom: 20px;
+
+    &::placeholder {
+      color: $border-color;
+    }
+    
+    &:focus {
+      border-color: $primary-color;
+      transition: 0.3s;
+    }
+  }
+
+  .title-area {
+    height: 40px;
+    border-width: 2px;
+    color: $font-color;
+
+    &::placeholder {
+      color: $border-color;
+    }
+    
+    &:focus {
+      border-color: $primary-color;
+      transition: 0.3s;
+    }
+  }
+
 }
 
 #netabare {
