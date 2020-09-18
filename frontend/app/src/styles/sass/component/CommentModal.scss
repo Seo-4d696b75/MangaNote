@@ -21,7 +21,7 @@ $font-color: dimgrey;
 }
 
 #edit {
-  filter: drop-shadow(rgba(0, 0, 0, 0.5) 0 2px 3px);
+  filter: drop-shadow(rgba(0, 0, 0, 0.5) 0 4px 6px);
   border-radius: 30px;
   width: 80vw;
   min-width: 350px;
@@ -51,13 +51,6 @@ $font-color: dimgrey;
       transition: 0.3s;
     }
   }
-
-  .wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .footer {
     border: thick solid $base-color;
     display: flex;
@@ -176,6 +169,7 @@ $font-color: dimgrey;
 
     &:hover {
       background-color: $primary-color;
+      transition: 0.2s;
     }
     
     &--active {
@@ -192,10 +186,12 @@ $font-color: dimgrey;
   .icon {
     @extend %icon;
     opacity: 0.4;
+    transition: 0.2s;
 
     &--active {
       @extend %icon;
       opacity: 0.6;
+      transition: 0.2s;
     }
   }
 
@@ -204,11 +200,13 @@ $font-color: dimgrey;
     font-weight: bold;
     color: black;
     opacity: 0.4;
+    transition: 0.2s;
 
     &--active {
       font-size: larger;
       font-weight: bold;
       color: $font-color;
+      transition: 0.2s;
     }
   }
 }

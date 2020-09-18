@@ -35,11 +35,9 @@ function Menu(props) {
     )
 
     return (
-      <div style={style}>
+      <div style={style} id="menu-index">
         <Button
-          variant={`outline-${
-            props.isCommentAppear ? "success" : "secondary"
-          }`}
+          variant={`outline-${props.isCommentAppear ? "success" : "secondary"}`}
           onClick={handleCommentChange}
           id="menu"
           className={`rounded-circle p-0 comment-menu${
@@ -60,7 +58,6 @@ function Menu(props) {
               </svg>
               <span className="comment-menu__text">非表示</span>
             </div>
-            
           ) : (
             <div className="comment-menu__container">
               <img

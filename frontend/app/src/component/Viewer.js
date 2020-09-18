@@ -150,36 +150,33 @@ function Viewer() {
   });
 
   return (
-      <Container id="mangaContainer">
-        <div style={{position: "relative"}}>
-          <Image
-            id="mangaImage"
-            src={mangaImage[pageNumber]}
-            {...longPressEvent}
+    <Container
+      id="mangaContainer"
+    >
+      <div style={{ position: "relative"}}>
+        <Image
+          id="mangaImage"
+          src={mangaImage[pageNumber]}
+          {...longPressEvent}
+        />
+        {isCommentAppear ? commentList : null}
+        {isMenuAppear ? (
+          <Menu
+            userChange={userChange}
+            commentChange={commentChange}
+            menuChange={menuChange}
+            isCommentAppear={isCommentAppear}
+            isMenuAppear={isMenuAppear}
+            users={users}
           />
-          {isCommentAppear
-            ? commentList
-            : null
-          }
-          {isMenuAppear
-            ? 
-              <Menu
-                userChange = {userChange}
-                commentChange = {commentChange}
-                menuChange = {menuChange}
-                isCommentAppear = {isCommentAppear}
-                isMenuAppear = {isMenuAppear}
-                users = {users}
-              />
-            : null
-          }
-        </div>
-        <CommentModal
-          show={show}
-          handleClose={handleModalClose}
-          appendComment={appendComment}
-        ></CommentModal>
-      </Container>
+        ) : null}
+      </div>
+      <CommentModal
+        show={show}
+        handleClose={handleModalClose}
+        appendComment={appendComment}
+      ></CommentModal>
+    </Container>
   );
 }
 
