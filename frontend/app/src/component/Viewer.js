@@ -24,7 +24,7 @@ function Viewer() {
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
   const [animatedCommentID, setAnimatedCommentID] = useState(-1);
-  const bookId = 2;
+  const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
@@ -108,7 +108,9 @@ function Viewer() {
     const comment_id = res.comment_id;
     if ( comment_id ){
       newComment.id = comment_id;
-      newComment.animation = 'appeal'
+      newComment.animation = 'appeal';
+      newComment.like_cnt = 0;
+      newComment.is_liked = false;
       console.log('success to post a comment', newComment);
       comments.pop();
       setComments([...comments, newComment]);
