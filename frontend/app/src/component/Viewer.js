@@ -23,7 +23,7 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
-  const [animatedCommentID, setAnimatedCommentID] = useState(-1);
+  const [menuAnimation, setMenuAnimation] = useState('');
   const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
@@ -82,7 +82,11 @@ function Viewer() {
     } else if(x >= 200/3) { // 右側をクリック
       setPageNumber(Math.min(pageNumber+1, mangaImagesLength-1))
     } else { //中央をクリック
+      setMenuAnimation('appear')
       setIsMenuAppear(!(isMenuAppear));
+      setTimeout(() => {
+        setMenuAnimation('');
+      }, 300);
     }
   }
 
@@ -95,7 +99,11 @@ function Viewer() {
   }
 
   const menuChange = () => {
-    setIsMenuAppear(!(isMenuAppear));
+    setMenuAnimation('disappear');
+    setTimeout(() => {
+      setMenuAnimation('');
+      setIsMenuAppear(!(isMenuAppear));
+    }, 300);
   }
   
   const userChange = (user_id) =>{
@@ -114,11 +122,12 @@ function Viewer() {
     const comment_id = res.comment_id;
     if ( comment_id ){
       newComment.id = comment_id;
-      newComment.animation = 'appeal'
+      newComment.animation = 'appeal';
+      newComment.like_cnt = 0;
+      newComment.is_liked = false;
       console.log('success to post a comment', newComment);
       comments.pop();
       setComments([...comments, newComment]);
-      setAnimatedCommentID(comment_id);
       setTimeout(() => {
         newComment.animation = undefined;
       }, 300);
@@ -156,7 +165,7 @@ function Viewer() {
 
   return (
       <Container id="mangaContainer">
-        <div style={{position: "relative"}}>
+        <div style={{position: "relative", height: '100%', maxHeight: '100%'}}>
           <Image
             id="mangaImage"
             src={mangaImage[pageNumber]}
@@ -167,7 +176,9 @@ function Viewer() {
 
           {isMenuAppear
             ? 
+            <div >
               <Menu
+                animation={menuAnimation}
                 userChange = {userChange}
                 commentChange = {commentChange}
                 menuChange = {menuChange}
@@ -175,6 +186,7 @@ function Viewer() {
                 isMenuAppear = {isMenuAppear}
                 users = {users}
               />
+            </div>
             : null
           }
         </div>

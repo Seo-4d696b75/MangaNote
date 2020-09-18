@@ -1,5 +1,7 @@
 # MangaNote
 
+[![Actions Status: test](https://github.com/Seo-4d696b75/MangaNote/workflows/Test/badge.svg)](https://github.com/Seo-4d696b75/MangaNote/actions?query=workflow%3A%22test%22)
+
 ## セットアップ方法
 ```
 docker-compose build

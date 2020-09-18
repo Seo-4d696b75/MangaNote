@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-
 import {Modal, Button, Form, Image, InputGroup, ToggleButton, ButtonGroup} from 'react-bootstrap';
+import Map from "./LocationSelect";
+
 
 import "../styles/sass/component/CommentModal.scss";
 import comment_edit_svg from "../images/icon/comment_edit.svg";
@@ -28,83 +29,92 @@ function CommentModal({show, handleClose, appendComment}) {
     }
   }
 
+  const commentTab = (
+    <Form.Group>
+      <Form.Control
+        placeholder="コメントを入力してください"
+        as="textarea"
+        rows="3"
+        onChange={(event) => {
+          setText(event.target.value);
+        }}
+        className="comment-area"
+      />
+      <InputGroup id="netabare" className="mb-3">
+        <InputGroup.Prepend className="wrapper">
+          <InputGroup.Checkbox id="isSpoiler" checked={checked} />
+        </InputGroup.Prepend>
+      </InputGroup>
+      <div>
+        <ButtonGroup toggle className="mb-2">
+          <ToggleButton
+            type="checkbox"
+            variant="secondary"
+            checked={checked}
+            value="1"
+            id="isNetabare"
+            onChange={(e) => setChecked(e.currentTarget.checked)}
+            className={`toggle${checked ? "--active" : ""}`}
+          ></ToggleButton>
+        </ButtonGroup>
+        <span>ネタバレコメントに設定する</span>
+      </div>
+    </Form.Group>
+  );
+
+  const mapTab = (
+    <div eventKey="map" title="聖地">
+      <div className='map-selector-location'>
+        スポットを選択してください：{location.lat>0 ? 'N':'S'}{Math.abs(location.lat).toFixed(4)}{location.lng>0 ? 'E':'W'}{Math.abs(location.lng).toFixed(4)}
+      </div>
+        <Map 
+          callback={pos => {setLocation(pos)}}
+          init_location={location}></Map>
+      <Form.Control
+        placeholder="タイトルを入力してください"
+        as="textarea"
+        rows="1"
+        onChange={event => {setTitle(event.target.value)}}
+      />
+      <Form.Control
+        placeholder="聖地の説明を入力してください"
+        as="textarea"
+        rows="3"
+        onChange={event => {setText(event.target.value)}}
+      />
+    </div> 
+  );
+
 
   return (
     <div>
       <Modal show={show} onHide={handleClose} centered id="edit">
         <div id="tabs">
-          <Button eventKey="comment" className="tab--active">
+          <Button
+            className={`tab${activeTab === 'comment' ? '--active' : ''}`}
+            onClick={()  =>  setActiveTab('comment')}
+          >
             <Image
               src={comment_edit_svg}
               roundedCircle
-              className="icon--active"
+              className={`icon${activeTab === 'comment' ? '--active' : ''}`}
             />
             <span className="title--active">コメント</span>
           </Button>
-          <Button className="tab">
-            <Image src={pin_edit_svg} roundedCircle className="icon"/>
+          <Button
+            className={`tab${activeTab === 'map' ? '--active' : ''}`}
+            onClick={()  =>  setActiveTab('map')}
+          >
+            <Image
+              src={pin_edit_svg}
+              roundedCircle
+              className={`icon${activeTab === 'map' ? '--active' : ''}`}
+            />
             <span className="title">聖 地</span>
           </Button>
         </div>
         <Modal.Body className="body">
-          <Form.Group>
-            <Form.Control
-              placeholder="コメントを入力してください"
-              as="textarea"
-              rows="3"
-              onChange={(event) => {
-                setText(event.target.value);
-              }}
-              className="comment-area"
-            />
-            <InputGroup id="netabare" className="mb-3">
-              <InputGroup.Prepend className="wrapper">
-                <InputGroup.Checkbox id="isSpoiler" checked={checked} />
-              </InputGroup.Prepend>
-            </InputGroup>
-            <div>
-              <ButtonGroup toggle className="mb-2">
-                <ToggleButton
-                  type="checkbox"
-                  variant="secondary"
-                  checked={checked}
-                  value="1"
-                  id="isNetabare"
-                  onChange={(e) => setChecked(e.currentTarget.checked)}
-                  className={`toggle${checked ? "--active" : ""}`}
-                ></ToggleButton>
-              </ButtonGroup>
-              <span>ネタバレコメントに設定する</span>
-            </div>
-          </Form.Group>
-
-{/* ここから聖地追加モーダル用要素
-
-
-            <div eventKey="map" title="聖地">
-                <div className='map-selector-location'>
-                  スポットを選択してください：{location.lat>0 ? 'N':'S'}{Math.abs(location.lat).toFixed(4)}{location.lng>0 ? 'E':'W'}{Math.abs(location.lng).toFixed(4)}
-                </div>
-                  <Map 
-                    callback={pos => {setLocation(pos)}}
-                    init_location={location}></Map>
-                <Form.Control
-                  placeholder="タイトルを入力してください"
-                  as="textarea"
-                  rows="1"
-                  onChange={event => {setTitle(event.target.value)}}
-                />
-                <Form.Control
-                  placeholder="聖地の説明を入力してください"
-                  as="textarea"
-                  rows="3"
-                  onChange={event => {setText(event.target.value)}}
-                />
-            </div> 
-
-
-ここまで聖地追加モーダル用要素 */}
-
+          {activeTab === "comment" ? commentTab : mapTab}
         </Modal.Body>
         <Modal.Footer className="footer">
           <Button
@@ -118,7 +128,7 @@ function CommentModal({show, handleClose, appendComment}) {
             variant="primary"
             disabled={!text.length}
             onClick={handleClick}
-            className="btn-post"
+            className={`btn-post${!text.length ? "" : "--active"}`}
           >
             投 稿
           </Button>
