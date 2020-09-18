@@ -1,0 +1,16 @@
+$size: 220px;
+
+.map-container {
+  width: $size;
+  height: $size;
+
+  &__map {
+    &--loading {
+      width: $size;
+      height: $size;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
