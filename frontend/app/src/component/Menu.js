@@ -14,7 +14,6 @@ function Menu(props) {
         position: "absolute",
         top: `85%`,
         left: `75%`,
-        
     };
     
     const handleCommentChange = () =>{

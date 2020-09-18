@@ -31,6 +31,12 @@ function Viewer() {
   }
   const mangaImagesLength = 10;
 
+  const style = {
+    opacity:`${isCommentAppear ? 1 :0 }`,
+    transition: `opacity 0.5s, visibility 0.5s`
+  }
+  
+
   useEffect(() => {
     async function fetchBooks() {
       const books = await getBooks(bookId);
@@ -144,7 +150,8 @@ function Viewer() {
       user_id={selectedUser}
       book_id={bookId} 
       commentData={comment}
-      callback={onLikeChanged} />;
+      callback={onLikeChanged}
+      />;
   });
 
   return (
@@ -155,10 +162,9 @@ function Viewer() {
             src={mangaImage[pageNumber]}
             {...longPressEvent}
           />
-          {isCommentAppear
-            ? commentList
-            : null
-          }
+          <div style = {style}>{commentList}</div>
+
+
           {isMenuAppear
             ? 
               <Menu
