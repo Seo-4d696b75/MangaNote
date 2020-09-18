@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
 import {getdefault} from '../api/APIUtils';
 
+import heart from '../images/comic/heart.svg';
+import heartFill from '../images/comic/heart-fill.svg';
+
 /**
  * コメントを一覧表示するモーダル
  * isActive: モーダルが表示状態か否か
@@ -29,6 +32,15 @@ function CommentList(props) {
       <div className="py-2 border-bottom">
         <strong className="d-block">{comment.user_name}</strong>
         {comment.text}
+        <div className="like" style={{width: "30px"}}>
+          <img
+            className='like__icon'
+            src={comment.is_liked ? heartFill : heart}
+          />
+          <div className={`like__cnt${comment.is_liked ? "--islinked" : ""}`}>
+            {comment.like_cnt}
+          </div>
+        </div>
       </div>
     )
   });
