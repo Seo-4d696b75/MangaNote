@@ -30,9 +30,7 @@ function Menu(props) {
     return (
       <DropdownItem eventKey={user.user_id}>{user.user_id}</DropdownItem>
     )
-  }
-  )
-
+  })
 
   return (
     <div className={`menu-container ${props.animation}`}>
@@ -62,6 +60,7 @@ function Menu(props) {
           </div>
 
         ) : (
+
             <div className="comment-menu__container">
               <img
                 src={comment_toggle_svg}
