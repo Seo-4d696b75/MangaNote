@@ -108,7 +108,7 @@ function Comment(props) {
             </Popover>
           ) : (
           <Popover className='comment'>
-            <div className='comment__container'>
+            <Popover.Content className='comment__container'>
               <p className='comment__text'>{text}</p>
               <div className='comment__footer'>
                 <img
@@ -128,7 +128,8 @@ function Comment(props) {
                   <TwitterIcon size='36' round={true} bgStyle={{fill:'transparent'}} iconFillColor='#1DA1F2'/>
                 </TwitterShareButton>
               </div>
-            </div>
+              
+              </Popover.Content>
           </Popover>
         )}>
         <p 

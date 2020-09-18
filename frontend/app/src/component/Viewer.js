@@ -24,7 +24,7 @@ function Viewer() {
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
   const [animatedCommentID, setAnimatedCommentID] = useState(-1);
-  const bookId = 1;
+  const bookId = 2;
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
