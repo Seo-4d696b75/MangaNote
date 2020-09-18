@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-
 import {Modal, Button, Form, Image, InputGroup, ToggleButton, ButtonGroup} from 'react-bootstrap';
+import Map from "./LocationSelect";
 
 import Map from "./LocationSelect";
 
@@ -129,7 +129,7 @@ function CommentModal({show, handleClose, appendComment}) {
             variant="primary"
             disabled={!text.length}
             onClick={handleClick}
-            className="btn-post"
+            className={`btn-post${!text.length ? "" : "--active"}`}
           >
             投 稿
           </Button>

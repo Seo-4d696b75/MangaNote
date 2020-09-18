@@ -10,6 +10,7 @@ $font-color: dimgrey;
   width: 6rem;
   height: 6rem;
   filter: drop-shadow(rgba(0, 0, 0, 0.4) 0 2px 3px);
+  transition: 0.3s;
 }
 
 #menu.comment-menu {
@@ -55,14 +56,12 @@ $font-color: dimgrey;
     z-index: -1;
     background-image: url(../../../images/icon/comment_toggle.svg);
     
-
     &--appear {
       width: 3rem;
       height: 3rem;
       z-index: 1;
       border-color: $primary-color;
       border-width: thick;
-
     }
   }
 
@@ -71,7 +70,7 @@ $font-color: dimgrey;
   }
 
   &__text {
-    
+    color: black;
   } 
 
   &--appear {
