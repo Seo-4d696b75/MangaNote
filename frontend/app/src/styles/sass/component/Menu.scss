@@ -78,3 +78,29 @@ $font-color: dimgrey;
 
   }
 }
+
+
+@keyframes appearAnimation {
+  0% {
+    transform: translateY(120%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.menu-container{
+  position: absolute;
+  top: 85%;
+  left: 75%;
+}
+
+.menu-container.appear{
+  animation: appearAnimation 0.3s;
+  animation-timing-function: ease-out;
+}
+
+.menu-container.disappear{
+  animation: appearAnimation 0.3s;
+  animation-direction: reverse;
+}

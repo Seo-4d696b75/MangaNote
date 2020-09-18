@@ -23,13 +23,19 @@ function Viewer() {
   const [isCommentAppear,setIsCommentAppear] = useState(true);
   const [selectedUser,setSelectedUser] = useState(1);
   const [show, setShow] = useState(false);
-  const [animatedCommentID, setAnimatedCommentID] = useState(-1);
+  const [menuAnimation, setMenuAnimation] = useState('');
   const bookId = 1;
   const users = [];
   for (let i = 1;i < 10;i++){
       users.push({user_id:i});
   }
   const mangaImagesLength = 10;
+
+  const style = {
+    opacity:`${isCommentAppear ? 1 :0 }`,
+    transition: `opacity 0.5s, visibility 0.5s`
+  }
+  
 
   useEffect(() => {
     async function fetchBooks() {
@@ -76,7 +82,11 @@ function Viewer() {
     } else if(x >= 200/3) { // 右側をクリック
       setPageNumber(Math.min(pageNumber+1, mangaImagesLength-1))
     } else { //中央をクリック
+      setMenuAnimation('appear')
       setIsMenuAppear(!(isMenuAppear));
+      setTimeout(() => {
+        setMenuAnimation('');
+      }, 300);
     }
   }
 
@@ -89,7 +99,11 @@ function Viewer() {
   }
 
   const menuChange = () => {
-    setIsMenuAppear(!(isMenuAppear));
+    setMenuAnimation('disappear');
+    setTimeout(() => {
+      setMenuAnimation('');
+      setIsMenuAppear(!(isMenuAppear));
+    }, 300);
   }
   
   const userChange = (user_id) =>{
@@ -114,7 +128,6 @@ function Viewer() {
       console.log('success to post a comment', newComment);
       comments.pop();
       setComments([...comments, newComment]);
-      setAnimatedCommentID(comment_id);
       setTimeout(() => {
         newComment.animation = undefined;
       }, 300);
@@ -146,37 +159,43 @@ function Viewer() {
       user_id={selectedUser}
       book_id={bookId} 
       commentData={comment}
-      callback={onLikeChanged} />;
+      callback={onLikeChanged}
+      />;
   });
 
   return (
-    <Container
-      id="mangaContainer"
-    >
-      <div style={{ position: "relative"}}>
-        <Image
-          id="mangaImage"
-          src={mangaImage[pageNumber]}
-          {...longPressEvent}
-        />
-        {isCommentAppear ? commentList : null}
-        {isMenuAppear ? (
-          <Menu
-            userChange={userChange}
-            commentChange={commentChange}
-            menuChange={menuChange}
-            isCommentAppear={isCommentAppear}
-            isMenuAppear={isMenuAppear}
-            users={users}
+      <Container id="mangaContainer">
+        <div style={{position: "relative", height: '100%', maxHeight: '100%'}}>
+          <Image
+            id="mangaImage"
+            src={mangaImage[pageNumber]}
+            {...longPressEvent}
           />
-        ) : null}
-      </div>
-      <CommentModal
-        show={show}
-        handleClose={handleModalClose}
-        appendComment={appendComment}
-      ></CommentModal>
-    </Container>
+          <div style = {style}>{commentList}</div>
+
+
+          {isMenuAppear
+            ? 
+            <div >
+              <Menu
+                animation={menuAnimation}
+                userChange = {userChange}
+                commentChange = {commentChange}
+                menuChange = {menuChange}
+                isCommentAppear = {isCommentAppear}
+                isMenuAppear = {isMenuAppear}
+                users = {users}
+              />
+            </div>
+            : null
+          }
+        </div>
+        <CommentModal
+          show={show}
+          handleClose={handleModalClose}
+          appendComment={appendComment}
+        ></CommentModal>
+      </Container>
   );
 }
 
