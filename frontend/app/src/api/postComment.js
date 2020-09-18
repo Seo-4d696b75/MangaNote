@@ -8,8 +8,8 @@ import {postdefault} from "./APIUtils";
       longitude:null,
       latitude:null,
       page:0,
-      x:10.1,
-      y:10.1
+      x:10,
+      y:10
     }
 */
 function postComment(bookId,params) {
