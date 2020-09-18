@@ -1,0 +1,34 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+      - backend
+  pull_request:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      APP_DATABASE_HOST: 127.0.0.1
+      APP_DATABASE_NAME: manga-note
+      APP_DATABASE_USER: root
+      APP_DATABASE_PASSWORD: root
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+          architecture: 'x64'
+      - name: Install Python dependencies
+        run: |
+          mv backend app
+          mkdir backend
+          mv app backend
+          cd backend/app
+          pip install -r requirements.txt
+      - name: run test
+        run: |
+          cd backend/app
+          pytest
